@@ -146,9 +146,75 @@
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 22px;
+    gap: 12px;
+    flex-wrap: wrap;
   }
   .panel-head h2 { font-size: 23px; }
   .count { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+
+  /* ---------- Collection controls (search + tag filters) ---------- */
+  .collection-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .filter-search-row {
+    position: relative;
+    max-width: 380px;
+  }
+  .filter-search-row input {
+    padding-left: 38px;
+    background: rgba(255,255,255,0.7);
+  }
+  .filter-search-row::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateY(-50%);
+    border: 2px solid var(--ink-soft);
+    border-radius: 50%;
+    box-shadow: 5px 5px 0 -3px var(--ink-soft);
+    pointer-events: none;
+  }
+  .tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .tag-pill {
+    padding: 6px 15px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(124, 58, 237, 0.22);
+    background: rgba(255,255,255,0.5);
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tag-pill:hover { border-color: var(--violet); color: var(--violet); }
+  .tag-pill.active {
+    background: linear-gradient(120deg, var(--violet), var(--blue));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(61, 107, 255, 0.3);
+  }
+  .clear-filters {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px 2px;
+  }
+  .clear-filters:hover { color: var(--pink); }
 
   /* ---------- Gallery grid ---------- */
   .gallery {
@@ -204,7 +270,7 @@
   }
   .qty-badge {
     position: absolute;
-    bottom: 10px;
+    top: 10px;
     left: 10px;
     padding: 4px 10px;
     border-radius: 999px;
@@ -214,11 +280,31 @@
     background: rgba(255,255,255,0.85);
     backdrop-filter: blur(6px);
   }
+  .tag-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(120deg, var(--blue), var(--cyan));
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+  }
   .piece-name {
     font-family: 'Fraunces', serif;
     font-size: 15px;
     line-height: 1.3;
     margin-bottom: 2px;
+  }
+  .piece-id {
+    font-size: 11.5px;
+    color: var(--ink-soft);
   }
 
   .empty, .loading {
@@ -258,6 +344,11 @@
     font-weight: 500;
     display: block;
     margin-bottom: 6px;
+  }
+  label .optional {
+    font-weight: 400;
+    font-style: italic;
+    opacity: 0.75;
   }
   input, textarea {
     width: 100%;
@@ -328,7 +419,8 @@
   }
   .preview-frame img { width: 100%; height: 100%; object-fit: cover; }
   .preview-frame .no-image { font-size: 12px; color: var(--ink-soft); font-style: italic; font-family: 'Fraunces', serif; }
-  .preview-name { font-family: 'Fraunces', serif; font-size: 18px; margin-bottom: 5px; }
+  .preview-name { font-family: 'Fraunces', serif; font-size: 18px; margin-bottom: 8px; }
+  .preview-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .preview-price {
     display: inline-block;
     color: #fff;
@@ -338,13 +430,22 @@
     border-radius: 999px;
     background: linear-gradient(120deg, var(--pink), var(--orange));
   }
+  .preview-tag {
+    display: inline-block;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, var(--blue), var(--cyan));
+  }
 
   /* ---------- Search / detail ---------- */
   .search-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 26px;
-    max-width: 340px;
+    margin-bottom: 10px;
+    max-width: 420px;
   }
   .search-row input { background: rgba(255,255,255,0.7); }
   .search-row button {
@@ -357,7 +458,63 @@
     font-size: 14px;
     font-weight: 600;
     box-shadow: 0 6px 16px rgba(61, 107, 255, 0.3);
+    white-space: nowrap;
   }
+  .search-hint {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+
+  .result-count { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; font-weight: 500; }
+  .result-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .result-row:hover { transform: translateX(4px); box-shadow: 0 8px 20px rgba(60, 40, 120, 0.14); }
+  .result-thumb {
+    width: 44px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .result-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .result-thumb .no-image { font-size: 16px; color: var(--ink-soft); }
+  .result-info { flex: 1; min-width: 0; }
+  .result-name { font-family: 'Fraunces', serif; font-size: 14.5px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .result-meta { font-size: 12px; color: var(--ink-soft); }
+  .result-price { font-weight: 600; font-size: 13.5px; color: var(--pink); white-space: nowrap; }
+
+  .back-link {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-link:hover { color: var(--violet); }
 
   .detail {
     display: grid;
@@ -381,7 +538,18 @@
   .detail-frame .no-image { font-size: 13px; color: var(--ink-soft); font-style: italic; font-family: 'Fraunces', serif; }
 
   .detail h3 { font-size: 23px; margin-bottom: 4px; }
-  .detail .id-tag { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 18px; }
+  .detail .id-tag { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 14px; }
+
+  .detail-tag-chip {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, var(--blue), var(--cyan));
+    margin-bottom: 18px;
+  }
 
   .stat-row { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
   .stat-chip {
@@ -450,7 +618,7 @@
 <nav>
   <button id="tabListBtn" class="active" onclick="showTab('list')">Collection</button>
   <button id="tabAddBtn" onclick="showTab('add')">Add a Piece</button>
-  <button id="tabSearchBtn" onclick="showTab('search')">Find by ID</button>
+  <button id="tabSearchBtn" onclick="showTab('search')">Search</button>
 </nav>
 
 <main>
@@ -461,6 +629,14 @@
       <h2>The Collection</h2>
       <span class="count" id="itemCount"></span>
     </div>
+
+    <div class="collection-controls">
+      <div class="filter-search-row">
+        <input id="collectionSearch" type="text" placeholder="Filter by name, tag, or ID…" oninput="applyFilters()">
+      </div>
+      <div id="tagFilters" class="tag-filters hidden"></div>
+    </div>
+
     <div id="gallery" class="gallery">
       <div class="loading">Loading the rack…</div>
     </div>
@@ -476,6 +652,10 @@
         <div class="field">
           <label>Name *</label>
           <input id="addName" type="text" placeholder="e.g. Floral Summer Dress" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>Tag <span class="optional">(optional)</span></label>
+          <input id="addTag" type="text" placeholder="e.g. Summer 2026, Bestseller…" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>Image</label>
@@ -518,7 +698,10 @@
             <span class="no-image">no image yet</span>
           </div>
           <div class="preview-name" id="previewName">Untitled piece</div>
-          <div class="preview-price" id="previewPrice">$0.00</div>
+          <div class="preview-meta-row">
+            <span class="preview-price" id="previewPrice">$0.00</span>
+            <span class="preview-tag hidden" id="previewTag"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -527,12 +710,13 @@
   <!-- SEARCH TAB -->
   <section id="tab-search" class="panel hidden">
     <div class="panel-head">
-      <h2>Find by ID</h2>
+      <h2>Search</h2>
     </div>
     <div class="search-row">
-      <input id="searchId" type="number" placeholder="Item ID…">
-      <button onclick="searchItem()">Find</button>
+      <input id="searchQuery" type="text" placeholder="Search by name, tag, or ID…" onkeydown="if(event.key==='Enter') runSearch()">
+      <button onclick="runSearch()">Search</button>
     </div>
+    <div class="search-hint">Matches any part of a name or tag, case-insensitive — or an exact ID.</div>
     <div id="searchResult"></div>
   </section>
 
@@ -559,6 +743,13 @@
   let selectedImageFile = null;
   let selectedImagePreviewUrl = null;
 
+  // Collection state
+  let allItems = [];
+  let activeTagFilter = null;
+
+  // Search tab cache (avoid refetching when opening a result from a list)
+  let currentSearchResults = [];
+
   function showTab(tab) {
     document.getElementById('tab-list').classList.add('hidden');
     document.getElementById('tab-add').classList.add('hidden');
@@ -573,7 +764,7 @@
     if (tab === 'list') loadItems();
   }
 
-  // ---------- LIST (gallery grid, with images) ----------
+  // ---------- LIST (gallery grid, with images, tag filters + quick search) ----------
   async function loadItems() {
     const gallery = document.getElementById('gallery');
     const count = document.getElementById('itemCount');
@@ -587,34 +778,112 @@
 
     if (error) {
       gallery.innerHTML = `<div class="empty"><strong>Couldn't load the collection</strong>${escapeHtml(error.message)}</div>`;
+      document.getElementById('tagFilters').classList.add('hidden');
       return;
     }
 
-    if (!data.length) {
+    allItems = data;
+    renderTagFilters();
+    applyFilters();
+  }
+
+  function renderTagFilters() {
+    const wrap = document.getElementById('tagFilters');
+    const tags = [...new Set(allItems.map(i => i.tag).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+
+    if (!tags.length) {
+      wrap.classList.add('hidden');
+      wrap.innerHTML = '';
+      return;
+    }
+
+    wrap.classList.remove('hidden');
+    wrap.innerHTML = tags.map(t => `
+      <button class="tag-pill ${activeTagFilter === t ? 'active' : ''}" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</button>
+    `).join('') + (activeTagFilter ? `<button class="clear-filters" id="clearTagFilter">Clear tag</button>` : '');
+  }
+
+  // event delegation for tag pills (safe against special characters in tag names)
+  document.addEventListener('click', (e) => {
+    const pill = e.target.closest('#tagFilters .tag-pill');
+    if (pill) {
+      const tag = pill.dataset.tag;
+      activeTagFilter = (activeTagFilter === tag) ? null : tag;
+      renderTagFilters();
+      applyFilters();
+      return;
+    }
+    if (e.target.id === 'clearTagFilter') {
+      activeTagFilter = null;
+      renderTagFilters();
+      applyFilters();
+    }
+  });
+
+  function applyFilters() {
+    const q = document.getElementById('collectionSearch').value.trim().toLowerCase();
+    let filtered = allItems;
+
+    if (activeTagFilter) {
+      filtered = filtered.filter(i => i.tag === activeTagFilter);
+    }
+
+    if (q) {
+      filtered = filtered.filter(i =>
+        i.name.toLowerCase().includes(q) ||
+        (i.tag && i.tag.toLowerCase().includes(q)) ||
+        String(i.id) === q
+      );
+    }
+
+    renderGallery(filtered);
+  }
+
+  function renderGallery(items) {
+    const gallery = document.getElementById('gallery');
+    const count = document.getElementById('itemCount');
+
+    if (!allItems.length) {
       gallery.innerHTML = '<div class="empty"><strong>The rack is empty</strong>Add your first piece to get started.</div>';
+      count.textContent = '';
       return;
     }
 
-    count.textContent = data.length + (data.length === 1 ? ' piece' : ' pieces');
+    if (!items.length) {
+      gallery.innerHTML = '<div class="empty"><strong>No matches</strong>Try a different name, tag, or ID.</div>';
+      count.textContent = '0 pieces';
+      return;
+    }
 
-    gallery.innerHTML = data.map(item => `
-      <button class="piece" onclick="goToSearch(${item.id})">
+    count.textContent = items.length + (items.length === 1 ? ' piece' : ' pieces') +
+      (items.length !== allItems.length ? ` of ${allItems.length}` : '');
+
+    gallery.innerHTML = items.map(item => `
+      <button class="piece" onclick="openFromCollection(${item.id})">
         <div class="piece-frame">
           ${item.image_url
             ? `<img src="${item.image_url}" alt="${escapeHtml(item.name)}" loading="lazy">`
             : `<span class="no-image">no image</span>`}
-          <span class="price-badge">$${Number(item.price).toFixed(2)}</span>
           <span class="qty-badge">Qty ${item.quantity ?? 0}</span>
+          <span class="price-badge">$${Number(item.price).toFixed(2)}</span>
+          ${item.tag ? `<span class="tag-badge">${escapeHtml(item.tag)}</span>` : ''}
         </div>
         <div class="piece-name">${escapeHtml(item.name)}</div>
+        <div class="piece-id">ID ${item.id}</div>
       </button>
     `).join('');
   }
 
-  function goToSearch(id) {
+  function openFromCollection(id) {
+    const item = allItems.find(i => i.id === id);
     showTab('search');
-    document.getElementById('searchId').value = id;
-    searchItem();
+    document.getElementById('searchQuery').value = id;
+    if (item) {
+      currentSearchResults = [item];
+      document.getElementById('searchResult').innerHTML = renderDetail(item);
+    } else {
+      runSearch();
+    }
   }
 
   // ---------- ADD ----------
@@ -637,9 +906,18 @@
   function updatePreview() {
     const name = document.getElementById('addName').value.trim();
     const price = parseFloat(document.getElementById('addPrice').value) || 0;
+    const tag = document.getElementById('addTag').value.trim();
 
     document.getElementById('previewName').textContent = name || 'Untitled piece';
     document.getElementById('previewPrice').textContent = '$' + price.toFixed(2);
+
+    const tagEl = document.getElementById('previewTag');
+    if (tag) {
+      tagEl.textContent = tag;
+      tagEl.classList.remove('hidden');
+    } else {
+      tagEl.classList.add('hidden');
+    }
 
     const frame = document.getElementById('previewFrame');
     frame.innerHTML = selectedImagePreviewUrl
@@ -684,6 +962,7 @@
     msg.className = 'msg';
 
     const name = document.getElementById('addName').value.trim();
+    const tag = document.getElementById('addTag').value.trim() || null;
     const cost = parseFloat(document.getElementById('addCost').value) || 0;
     const price = parseFloat(document.getElementById('addPrice').value) || 0;
     const qty = parseInt(document.getElementById('addQty').value) || 0;
@@ -713,7 +992,7 @@
 
       const { data, error } = await supabaseClient
         .from('items')
-        .insert([{ name, cost, price, quantity: qty, colors, sizes, image_url, notes }])
+        .insert([{ name, tag, cost, price, quantity: qty, colors, sizes, image_url, notes }])
         .select();
 
       if (error) {
@@ -735,7 +1014,7 @@
   }
 
   function clearAddForm() {
-    ['addName','addCost','addPrice','addQty','addColors','addSizes','addNotes']
+    ['addName','addTag','addCost','addPrice','addQty','addColors','addSizes','addNotes']
       .forEach(id => document.getElementById(id).value = '');
 
     document.getElementById('addImageFile').value = '';
@@ -752,37 +1031,109 @@
     return str.split(',').map(s => s.trim()).filter(Boolean);
   }
 
-  // ---------- SEARCH / DETAIL ----------
-  async function searchItem() {
-    const idVal = document.getElementById('searchId').value;
+  // ---------- SEARCH (by name, tag, or ID — case-insensitive) ----------
+  async function runSearch() {
+    const raw = document.getElementById('searchQuery').value.trim();
     const resultDiv = document.getElementById('searchResult');
 
-    if (!idVal) {
-      resultDiv.innerHTML = '<div class="msg error">Enter an item ID.</div>';
+    if (!raw) {
+      resultDiv.innerHTML = '<div class="msg error">Type a name, tag, or ID to search.</div>';
       return;
     }
 
     resultDiv.innerHTML = '<div class="loading">Searching…</div>';
 
+    // PostgREST's .or() uses commas/parens as syntax — strip them from free text to keep the filter valid
+    const cleaned = raw.replace(/[,()]/g, ' ').trim();
+    const isNumeric = /^\d+$/.test(raw);
+
+    let filter = `name.ilike.%${cleaned}%,tag.ilike.%${cleaned}%`;
+    if (isNumeric) filter += `,id.eq.${raw}`;
+
     const { data, error } = await supabaseClient
       .from('items')
       .select('*')
-      .eq('id', idVal)
-      .maybeSingle();
+      .or(filter)
+      .order('id', { ascending: true });
 
     if (error) {
       resultDiv.innerHTML = `<div class="msg error">Error: ${escapeHtml(error.message)}</div>`;
       return;
     }
-    if (!data) {
-      resultDiv.innerHTML = '<div class="empty"><strong>Nothing found</strong>No piece with that ID.</div>';
+
+    if (!data.length) {
+      resultDiv.innerHTML = '<div class="empty"><strong>Nothing found</strong>No piece matches that name, tag, or ID.</div>';
       return;
     }
 
+    currentSearchResults = data;
+
+    if (data.length === 1) {
+      resultDiv.innerHTML = renderDetail(data[0]);
+      return;
+    }
+
+    resultDiv.innerHTML = `
+      <div class="result-count">${data.length} matches</div>
+      <div class="result-list">
+        ${data.map(item => `
+          <button class="result-row" data-id="${item.id}">
+            <div class="result-thumb">
+              ${item.image_url ? `<img src="${item.image_url}" alt="">` : `<span class="no-image">—</span>`}
+            </div>
+            <div class="result-info">
+              <div class="result-name">${escapeHtml(item.name)}</div>
+              <div class="result-meta">ID ${item.id}${item.tag ? ' · ' + escapeHtml(item.tag) : ''} · Qty ${item.quantity ?? 0}</div>
+            </div>
+            <div class="result-price">$${Number(item.price).toFixed(2)}</div>
+          </button>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // open a detail view from the result list without refetching
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('.result-row');
+    if (!row) return;
+    const id = parseInt(row.dataset.id, 10);
+    const item = currentSearchResults.find(i => i.id === id);
+    if (item) {
+      document.getElementById('searchResult').innerHTML = renderBackLink() + renderDetail(item);
+    }
+  });
+
+  function renderBackLink() {
+    if (currentSearchResults.length <= 1) return '';
+    return `<button class="back-link" onclick="reRenderResultsList()">&larr; Back to results</button>`;
+  }
+
+  function reRenderResultsList() {
+    const resultDiv = document.getElementById('searchResult');
+    resultDiv.innerHTML = `
+      <div class="result-count">${currentSearchResults.length} matches</div>
+      <div class="result-list">
+        ${currentSearchResults.map(item => `
+          <button class="result-row" data-id="${item.id}">
+            <div class="result-thumb">
+              ${item.image_url ? `<img src="${item.image_url}" alt="">` : `<span class="no-image">—</span>`}
+            </div>
+            <div class="result-info">
+              <div class="result-name">${escapeHtml(item.name)}</div>
+              <div class="result-meta">ID ${item.id}${item.tag ? ' · ' + escapeHtml(item.tag) : ''} · Qty ${item.quantity ?? 0}</div>
+            </div>
+            <div class="result-price">$${Number(item.price).toFixed(2)}</div>
+          </button>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderDetail(data) {
     const colors = data.colors || [];
     const sizes = data.sizes || [];
 
-    resultDiv.innerHTML = `
+    return `
       <div class="detail glass-panel">
         <div class="detail-frame">
           ${data.image_url
@@ -792,6 +1143,7 @@
         <div>
           <h3>${escapeHtml(data.name)}</h3>
           <div class="id-tag">ID ${data.id} · added ${new Date(data.created_at).toLocaleDateString()}</div>
+          ${data.tag ? `<span class="detail-tag-chip">${escapeHtml(data.tag)}</span>` : ''}
 
           <div class="stat-row">
             <div class="stat-chip price"><b>$${Number(data.price).toFixed(2)}</b><span>price</span></div>
@@ -840,6 +1192,7 @@
       alert('Error deleting: ' + error.message);
       return;
     }
+    currentSearchResults = currentSearchResults.filter(i => i.id !== id);
     document.getElementById('searchResult').innerHTML = '<div class="msg success">Piece deleted.</div>';
   }
 
