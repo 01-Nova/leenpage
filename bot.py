@@ -1,4 +1,4 @@
-```python
+
 import asyncio
 import html
 import logging
@@ -18,9 +18,9 @@ from telegram.ext import (
 # CONFIGURATION
 # ============================================================
 
-TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-SUPABASE_URL = os.environ["SUPABASE_URL"]
-SUPABASE_KEY = os.environ["SUPABASE_KEY"]
+TELEGRAM_BOT_TOKEN = os.environ["8533510131:AAEKV94qUcosfw6bvX6hoSLMmYs5fWSPOKc"]
+SUPABASE_URL = os.environ["https://fantkmdbnhtlwiyfjicl.supabase.co"]
+SUPABASE_KEY = os.environ["sb_publishable_D12sGfWmd2ztsE6HU5csIQ_PP4_sJ-H"]
 
 
 # ============================================================
@@ -418,4 +418,3 @@ async def run_bot():
 
 if __name__ == "__main__":
     asyncio.run(run_bot())
-```
