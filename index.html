@@ -396,6 +396,21 @@
   }
   button.ghost-danger:hover { background: var(--pink); color: #fff; }
 
+  button.ghost-edit {
+    background: rgba(255,255,255,0.6);
+    color: var(--violet);
+    border: 1.5px solid var(--violet);
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+  }
+  button.ghost-edit:hover { background: var(--violet); color: #fff; }
+
+  .detail-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
   .msg { margin-top: 12px; font-size: 13.5px; font-weight: 500; }
   .msg.error { color: var(--pink); }
   .msg.success { color: var(--cyan); }
@@ -596,6 +611,21 @@
   .detail-section label { margin-bottom: 6px; }
   .detail-section .notes-text { font-size: 14px; color: var(--ink); line-height: 1.55; }
 
+  .edit-preview-frame {
+    max-width: 160px;
+    aspect-ratio: 3 / 4;
+    background: rgba(255,255,255,0.5);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    border: 1px dashed rgba(124, 58, 237, 0.3);
+  }
+  .edit-preview-frame img { width: 100%; height: 100%; object-fit: cover; }
+  .edit-preview-frame .no-image { font-size: 11px; color: var(--ink-soft); font-style: italic; font-family: 'Fraunces', serif; }
+
   .hidden { display: none; }
 </style>
 </head>
@@ -742,6 +772,10 @@
   // currently selected file for the Add form + its local preview URL
   let selectedImageFile = null;
   let selectedImagePreviewUrl = null;
+
+  // currently selected file for the Edit form + its local preview URL
+  let editImageFile = null;
+  let editImagePreviewUrl = null;
 
   // Collection state
   let allItems = [];
@@ -1177,12 +1211,184 @@
             </div>
           ` : ''}
 
-          <div class="detail-section">
+          <div class="detail-section detail-actions">
+            <button class="ghost-edit" onclick="startEdit(${data.id})">Edit this piece</button>
             <button class="ghost-danger" onclick="deleteItem(${data.id})">Delete this piece</button>
           </div>
         </div>
       </div>
     `;
+  }
+
+  // ---------- EDIT ----------
+  function findItemById(id) {
+    return currentSearchResults.find(i => i.id === id) || allItems.find(i => i.id === id) || null;
+  }
+
+  function startEdit(id) {
+    const item = findItemById(id);
+    if (!item) return;
+
+    if (editImagePreviewUrl) {
+      URL.revokeObjectURL(editImagePreviewUrl);
+      editImagePreviewUrl = null;
+    }
+    editImageFile = null;
+
+    document.getElementById('searchResult').innerHTML = renderBackLink() + renderEditForm(item);
+  }
+
+  function renderEditForm(item) {
+    const colors = (item.colors || []).join(', ');
+    const sizes = (item.sizes || []).join(', ');
+
+    return `
+      <div class="glass-panel">
+        <div class="panel-head"><h2>Edit Piece</h2></div>
+
+        <div class="field">
+          <label>Name *</label>
+          <input id="editName" type="text" value="${escapeAttr(item.name)}">
+        </div>
+        <div class="field">
+          <label>Tag <span class="optional">(optional)</span></label>
+          <input id="editTag" type="text" value="${escapeAttr(item.tag || '')}">
+        </div>
+        <div class="field">
+          <label>Image <span class="optional">(leave blank to keep the current one)</span></label>
+          <input id="editImageFile" type="file" accept="image/*" onchange="handleEditImageSelect(event)">
+          <div class="edit-preview-frame" id="editPreviewFrame">
+            ${item.image_url ? `<img src="${item.image_url}" alt="">` : `<span class="no-image">no image</span>`}
+          </div>
+        </div>
+        <div class="field field-row">
+          <div>
+            <label>Cost *</label>
+            <input id="editCost" type="number" step="0.01" value="${item.cost ?? 0}">
+          </div>
+          <div>
+            <label>Price *</label>
+            <input id="editPrice" type="number" step="0.01" value="${item.price ?? 0}">
+          </div>
+        </div>
+        <div class="field">
+          <label>Quantity</label>
+          <input id="editQty" type="number" value="${item.quantity ?? 0}">
+        </div>
+        <div class="field">
+          <label>Colors (comma separated)</label>
+          <input id="editColors" type="text" value="${escapeAttr(colors)}">
+        </div>
+        <div class="field">
+          <label>Sizes (comma separated)</label>
+          <input id="editSizes" type="text" value="${escapeAttr(sizes)}">
+        </div>
+        <div class="field">
+          <label>Notes</label>
+          <textarea id="editNotes">${escapeHtml(item.notes || '')}</textarea>
+        </div>
+
+        <div class="detail-actions">
+          <button class="primary" id="saveEditBtn" onclick="saveEdit(${item.id})">Save Changes</button>
+          <button class="ghost-danger" onclick="cancelEdit(${item.id})">Cancel</button>
+        </div>
+        <div id="editMsg" class="msg"></div>
+      </div>
+    `;
+  }
+
+  function handleEditImageSelect(event) {
+    const file = event.target.files && event.target.files[0] ? event.target.files[0] : null;
+
+    if (editImagePreviewUrl) {
+      URL.revokeObjectURL(editImagePreviewUrl);
+      editImagePreviewUrl = null;
+    }
+    editImageFile = file;
+
+    const frame = document.getElementById('editPreviewFrame');
+    if (file) {
+      editImagePreviewUrl = URL.createObjectURL(file);
+      frame.innerHTML = `<img src="${editImagePreviewUrl}" alt="preview">`;
+    }
+  }
+
+  function cancelEdit(id) {
+    const item = findItemById(id);
+    if (editImagePreviewUrl) {
+      URL.revokeObjectURL(editImagePreviewUrl);
+      editImagePreviewUrl = null;
+    }
+    editImageFile = null;
+    document.getElementById('searchResult').innerHTML = renderBackLink() + (item ? renderDetail(item) : '');
+  }
+
+  async function saveEdit(id) {
+    const msg = document.getElementById('editMsg');
+    msg.textContent = '';
+    msg.className = 'msg';
+
+    const name = document.getElementById('editName').value.trim();
+    const tag = document.getElementById('editTag').value.trim() || null;
+    const cost = parseFloat(document.getElementById('editCost').value) || 0;
+    const price = parseFloat(document.getElementById('editPrice').value) || 0;
+    const qty = parseInt(document.getElementById('editQty').value) || 0;
+    const colors = splitCsv(document.getElementById('editColors').value);
+    const sizes = splitCsv(document.getElementById('editSizes').value);
+    const notes = document.getElementById('editNotes').value.trim();
+
+    if (!name) {
+      msg.textContent = 'A name is required.';
+      msg.classList.add('error');
+      return;
+    }
+
+    const saveBtn = document.getElementById('saveEditBtn');
+    const originalText = saveBtn.textContent;
+    saveBtn.disabled = true;
+
+    try {
+      const updateFields = { name, tag, cost, price, quantity: qty, colors, sizes, notes };
+
+      if (editImageFile) {
+        saveBtn.textContent = 'Uploading image…';
+        updateFields.image_url = await uploadImageAndGetSignedUrl(editImageFile);
+      }
+
+      saveBtn.textContent = 'Saving…';
+
+      const { data, error } = await supabaseClient
+        .from('items')
+        .update(updateFields)
+        .eq('id', id)
+        .select();
+
+      if (error) {
+        msg.textContent = 'Error: ' + error.message;
+        msg.classList.add('error');
+        return;
+      }
+
+      const updated = data[0];
+
+      // keep local caches in sync so navigating back shows the fresh values
+      currentSearchResults = currentSearchResults.map(i => i.id === id ? updated : i);
+      allItems = allItems.map(i => i.id === id ? updated : i);
+
+      if (editImagePreviewUrl) {
+        URL.revokeObjectURL(editImagePreviewUrl);
+        editImagePreviewUrl = null;
+      }
+      editImageFile = null;
+
+      document.getElementById('searchResult').innerHTML = renderBackLink() + renderDetail(updated);
+    } catch (err) {
+      msg.textContent = err.message || 'Something went wrong.';
+      msg.classList.add('error');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalText;
+    }
   }
 
   async function deleteItem(id) {
@@ -1201,6 +1407,11 @@
     return String(str).replace(/[&<>"']/g, m => ({
       '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[m]));
+  }
+
+  // like escapeHtml, but also safe to drop inside a double-quoted HTML attribute
+  function escapeAttr(str) {
+    return escapeHtml(str);
   }
 
   // initial load
