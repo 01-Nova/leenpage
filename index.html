@@ -1,588 +1,585 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>فرۆشگای لین</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leen</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+  /* ============ Kurdish fonts (local) ============ */
+  @font-face{
+    font-family:'IRBL';
+    src:url('ir_bl.ttf') format('truetype');
+    font-weight:400;
+    font-display:swap;
+  }
+  @font-face{
+    font-family:'KJino';
+    src:url('KJino.TTF') format('truetype');
+    font-weight:400;
+    font-display:swap;
+  }
+  @font-face{
+    font-family:'PeshangBold';
+    src:url('Peshang_Des_1_bold_.ttf') format('truetype');
+    font-weight:700;
+    font-display:swap;
+  }
 
-  /* ============ Tokens (light, always) ============ */
+  /* ============ Design tokens ============ */
   :root{
-    --paper:#fdf9f3;
-    --paper-deep:#f8ecdd;
-    --card:#ffffff;
-    --ink:#3a2f22;
-    --ink-soft:#8f7d68;
-    --rose:#e8a79c;
-    --rose-deep:#c17b6c;
-    --gold:#c9a15a;
-    --sage:#8fa06f;
-    --muted:#c7b8a0;
-    --line:#efe1c8;
-    --overlay:rgba(58,47,34,0.6);
-    --radius:16px;
-    box-sizing:border-box;
-    padding-top:env(safe-area-inset-top, 0px);
-    padding-bottom:env(safe-area-inset-bottom, 0px);
+    --cream:#FBF3EC;
+    --blush:#F2DCD3;
+    --blush-deep:#E7BEB0;
+    --rose:#C1725A;
+    --rose-dark:#9C5642;
+    --gold:#B8933E;
+    --gold-light:#E7D5A6;
+    --ink:#2B211D;
+    --ink-soft:#6E5D55;
+    --line:#E4D2C7;
+    --white:#FFFFFF;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(43,33,29,.08);
   }
-
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top, 0px);}
-
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
-  }
-
+  html,body{margin:0;padding:0;}
   body{
-    margin:0;
-    background-color:var(--paper);
-    background-image:radial-gradient(rgba(193,123,108,0.06) 1px, transparent 1px);
-    background-size:15px 15px;
+    background:var(--cream);
     color:var(--ink);
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  a{color:inherit;}
-  img{max-width:100%;}
-  :focus-visible{outline:2px solid var(--rose-deep); outline-offset:3px;}
-
-  .wrap{max-width:1120px; margin:0 auto; padding-left:24px; padding-right:24px;}
-  @media (max-width:520px){ .wrap{padding-left:18px; padding-right:18px;} }
-
-  /* ---------------- Hero ---------------- */
-  .hero{
-    position:relative;
-    padding:68px 0 40px;
-    text-align:center;
-    overflow:hidden;
-  }
-  .hero::before{
-    content:"";
-    position:absolute;
-    top:-120px; left:50%;
-    width:640px; height:320px;
-    transform:translateX(-50%);
-    background:radial-gradient(ellipse at center, rgba(232,167,156,0.22), transparent 70%);
-    pointer-events:none;
-  }
-
-  .brand-mark{
-    width:64px;
-    height:64px;
-    object-fit:contain;
-    margin:0 auto 18px;
-    display:block;
-    border-radius:50%;
-  }
-
-  .eyebrow-thread{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:16px;
-    color:var(--gold);
-  }
-  .eyebrow-thread span{
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    font-size:0.78rem;
-    letter-spacing:0.08em;
-    color:var(--ink-soft);
-  }
-  .eyebrow-thread .thread-line{
-    width:34px; height:1px;
-    background:var(--line);
-  }
-
-  .hero h1{
-    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
-    font-weight:600;
-    font-size:clamp(2.6rem,7vw,4rem);
-    letter-spacing:0.01em;
-    margin:0;
-    color:var(--ink);
-  }
-
-  .tagline{
-    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
-    font-style:italic;
-    font-size:1.2rem;
-    color:var(--ink-soft);
-    margin:14px auto 0;
-    max-width:440px;
-    line-height:1.5;
-  }
-
-  .hero-cta{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    margin-top:28px;
-    padding:12px 26px;
-    background:var(--rose-deep);
-    color:#fff;
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    font-weight:600;
-    font-size:0.92rem;
-    border-radius:999px;
-    text-decoration:none;
-    box-shadow:0 8px 20px rgba(193,123,108,0.25);
-    transition:transform 0.18s ease, box-shadow 0.18s ease;
-  }
-  .hero-cta:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(193,123,108,0.32); }
-
-  .stitch-divider{
-    width:220px;
-    height:1px;
-    margin:44px auto 0;
-    border-top:1px dashed var(--gold);
-    opacity:0.6;
-  }
-
-  /* ---------------- Filters ---------------- */
-  .filters-bar{
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .filters{
-    display:flex;
-    gap:10px;
-    padding:16px 0;
-    overflow-x:auto;
-    scrollbar-width:none;
-  }
-  .filters::-webkit-scrollbar{display:none;}
-
-  .chip{
-    flex:0 0 auto;
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    font-size:0.85rem;
-    padding:9px 20px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:var(--card);
-    color:var(--ink-soft);
-    cursor:pointer;
-    white-space:nowrap;
-    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  }
-  .chip:hover{ border-color:var(--rose-deep); color:var(--ink); }
-  .chip.active{
-    background:var(--rose-deep);
-    border-color:var(--rose-deep);
-    color:#fff;
-  }
-
-  /* ---------------- Sections by type ---------------- */
-  .catalog{ padding:8px 0 30px; }
-
-  .type-section{ padding:44px 0 6px; }
-  .type-section + .type-section{ border-top:1px solid var(--line); }
-
-  .type-heading{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:16px;
-    margin-bottom:24px;
-  }
-  .type-heading h2{
-    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
-    font-weight:600;
-    font-size:clamp(1.7rem,3.4vw,2.3rem);
-    margin:0;
-    color:var(--ink);
-  }
-  .type-count{
-    font-size:0.78rem;
-    color:var(--ink-soft);
-    white-space:nowrap;
-    padding-bottom:4px;
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
-    gap:26px;
-  }
-
-  .state-message{
-    text-align:center;
-    padding:70px 20px;
-    color:var(--ink-soft);
-    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
-    font-style:italic;
-    font-size:1.25rem;
-  }
-
-  /* ---------------- Card ---------------- */
-  .card{
-    position:relative;
-    background:var(--card);
-    border-radius:var(--radius);
-    border:1px solid var(--line);
-    overflow:hidden;
-    cursor:pointer;
-    text-align:right;
-    transition:transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .card:hover, .card:focus-visible{
-    transform:translateY(-5px);
-    box-shadow:0 16px 30px rgba(58,47,34,0.12);
-  }
-
-  .card-media{
-    position:relative;
-    aspect-ratio:3/4;
-    background:var(--paper-deep);
-    overflow:hidden;
-  }
-  .card-media img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    transition:transform 0.4s ease;
-  }
-  .card:hover .card-media img{ transform:scale(1.045); }
-
-  .swing-tag{
-    position:absolute;
-    top:14px;
-    right:-6px;
-    background:var(--rose-deep);
-    color:#fff;
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    font-size:0.72rem;
-    letter-spacing:0.03em;
-    padding:5px 12px 5px 16px;
-    border-radius:4px 0 0 4px;
-    transform:rotate(-2deg);
-    box-shadow:0 3px 6px rgba(0,0,0,0.14);
-  }
-  .swing-tag::before{
-    content:"";
-    position:absolute;
-    right:5px; top:50%;
-    width:4px; height:4px;
-    border-radius:50%;
-    background:#fff;
-    transform:translateY(-50%);
-  }
-
-  .status-badge{
-    position:absolute;
-    top:14px; left:14px;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    background:color-mix(in srgb, var(--card) 92%, transparent);
-    padding:5px 11px;
-    border-radius:999px;
-    font-size:0.72rem;
-    color:var(--ink);
-  }
-  .status-dot{ width:7px; height:7px; border-radius:50%; background:var(--sage); }
-  .status-badge.unavailable .status-dot{ background:var(--muted); }
-  .status-badge.unavailable{ color:var(--ink-soft); }
-
-  .card-body{ padding:17px 17px 19px; }
-
-  .card-name{
-    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
-    font-weight:600;
-    font-size:1.32rem;
-    margin:0 0 8px;
-    color:var(--ink);
-    line-height:1.2;
-  }
-
-  .card-detail{
-    font-size:0.86rem;
-    color:var(--ink-soft);
-    margin:0 0 13px;
-    line-height:1.45;
-  }
-
-  .swatch-row{ display:flex; align-items:center; gap:7px; margin-bottom:13px; flex-wrap:wrap; }
-  .swatch{
-    width:16px; height:16px;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.12);
-    box-shadow:inset 0 0 0 2px var(--card);
-  }
-  .swatch-empty{ font-size:0.78rem; color:var(--ink-soft); font-style:italic; }
-
-  .size-row{ display:flex; flex-wrap:wrap; gap:6px; }
-  .size-pill{
-    font-size:0.74rem;
-    font-family:'Noto Sans Arabic','Karla',sans-serif;
-    min-width:28px;
-    padding:0 7px;
-    height:25px;
-    display:flex; align-items:center; justify-content:center;
-    border-radius:7px;
-    border:1px solid var(--line);
-    color:var(--ink);
-    background:var(--paper);
-  }
-  .size-pill.unavailable{
-    color:var(--muted);
-    border-color:var(--paper-deep);
-    background:transparent;
-    text-decoration:line-through;
-  }
-
-  .card-hint{
-    margin:15px 0 0;
-    padding-top:13px;
-    border-top:1px dashed var(--line);
-    font-size:0.78rem;
-    color:var(--rose-deep);
-    font-weight:600;
-  }
-
-  /* ---------------- Footer ---------------- */
-  .site-footer{
-    text-align:center;
-    padding:56px 24px 72px;
-  }
-  .site-footer p{
-    color:var(--ink-soft);
-    font-size:0.95rem;
-    margin:0 0 18px;
+    font-family:'IRBL','KJino',sans-serif;
     line-height:1.6;
   }
-  .ig-button{
-    display:inline-flex;
-    align-items:center;
-    gap:9px;
-    padding:13px 28px;
-    background:var(--rose-deep);
-    color:#fff;
+  h1,h2,h3,.display{
+    font-family:'PeshangBold',serif;
     font-weight:700;
-    font-size:0.92rem;
-    border-radius:999px;
-    text-decoration:none;
-    transition:transform 0.18s ease, opacity 0.18s ease;
+    margin:0;
   }
-  .ig-button:hover{ transform:translateY(-2px); opacity:0.92; }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;}
 
-  @media (max-width:420px){
-    .grid{ grid-template-columns:1fr 1fr; gap:14px; }
-    .hero{ padding:52px 0 30px; }
-    .type-section{ padding:36px 0 6px; }
+  /* ============ Header ============ */
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
   }
+  .header-inner{
+    max-width:1280px;margin:0 auto;
+    display:flex;align-items:center;gap:24px;
+    padding:14px 24px;
+  }
+  .logo{font-size:22px;font-family:'PeshangBold',serif;font-weight:700;color:var(--rose-dark);white-space:nowrap;}
+  nav.main-nav{display:flex;gap:22px;flex:1;}
+  nav.main-nav a{font-size:15px;font-weight:600;color:var(--ink-soft);padding:6px 2px;border-bottom:2px solid transparent;transition:.2s;}
+  nav.main-nav a.active,nav.main-nav a:hover{color:var(--rose-dark);border-color:var(--rose);}
+  .search-box{
+    display:flex;align-items:center;gap:8px;
+    background:var(--cream);border:1px solid var(--line);border-radius:999px;
+    padding:8px 16px;min-width:220px;flex:1;max-width:320px;
+  }
+  .search-box input{border:none;background:transparent;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink);}
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--cream);border:1px solid var(--line);flex-shrink:0;
+  }
+  .header-actions{display:flex;align-items:center;gap:10px;}
+
+  @media(max-width:900px){
+    nav.main-nav{display:none;}
+    .search-box{max-width:none;order:3;flex-basis:100%;}
+    .header-inner{flex-wrap:wrap;}
+  }
+
+  /* ============ Hero / Banners ============ */
+  .hero-wrap{max-width:1280px;margin:24px auto 0;padding:0 24px;}
+  .hero{
+    position:relative;border-radius:20px;overflow:hidden;
+    background:linear-gradient(135deg,var(--blush) 0%,var(--blush-deep) 100%);
+    aspect-ratio:2.3/1;
+  }
+  .hero-slide{
+    position:absolute;inset:0;
+    opacity:0;transition:opacity .6s ease;
+  }
+  .hero-slide img{
+    width:100%;height:100%;object-fit:cover;object-position:center;display:block;
+  }
+  .hero-text{
+    position:absolute;inset:0;z-index:2;
+    display:flex;align-items:center;
+    padding:0 60px;
+    pointer-events:none;
+    background:linear-gradient(90deg,rgba(251,243,236,.9) 0%,rgba(251,243,236,.55) 40%,rgba(251,243,236,0) 70%);
+  }
+  .hero-text > div{max-width:420px;pointer-events:auto;}
+  .hero-slide.active{opacity:1;}
+  .hero-text h2{font-size:34px;color:var(--ink);line-height:1.35;margin-bottom:16px;}
+  .hero-text p{color:var(--ink-soft);margin-bottom:20px;font-size:15px;}
+  .btn-primary{
+    display:inline-block;background:var(--ink);color:var(--white);
+    padding:12px 28px;border-radius:999px;font-weight:700;font-size:14px;border:none;
+    transition:.2s;
+  }
+  .btn-primary:hover{background:var(--rose-dark);}
+  .hero-dots{position:absolute;bottom:18px;right:50%;transform:translateX(50%);display:flex;gap:8px;z-index:3;}
+  .hero-dots span{width:8px;height:8px;border-radius:50%;background:rgba(43,33,29,.25);cursor:pointer;}
+  .hero-dots span.active{background:var(--rose-dark);width:22px;border-radius:5px;transition:.25s;}
+  .hero-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+
+  @media(max-width:640px){
+    .hero{aspect-ratio:4/3;}
+    .hero-text{max-width:100%;padding-inline-end:10px;}
+    .hero-text h2{font-size:22px;}
+    .hero-slide{padding:0 24px;}
+  }
+
+  /* ============ Category strip ============ */
+  .cat-strip{
+    max-width:1280px;margin:36px auto 0;padding:0 24px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  }
+  .cat-card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    padding:20px 10px;transition:.2s;
+  }
+  .cat-card:hover{border-color:var(--rose);transform:translateY(-3px);box-shadow:var(--shadow);}
+  .cat-card .emoji{font-size:30px;background:var(--blush);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .cat-card span{font-weight:700;font-size:15px;}
+  .cat-card.active{border-color:var(--rose-dark);background:var(--blush);}
+  @media(max-width:640px){.cat-strip{grid-template-columns:repeat(4,1fr);gap:10px;} .cat-card{padding:12px 4px;} .cat-card .emoji{width:42px;height:42px;font-size:22px;} .cat-card span{font-size:12px;}}
+
+  /* ============ Main layout ============ */
+  .layout{max-width:1280px;margin:36px auto;padding:0 24px;display:flex;gap:28px;align-items:flex-start;}
+  aside.filters{
+    width:230px;flex-shrink:0;background:var(--white);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;position:sticky;top:90px;
+  }
+  aside.filters h3{font-size:16px;margin-bottom:14px;font-family:'IRBL';font-weight:800;}
+  .filter-group{margin-bottom:22px;}
+  .filter-group h4{font-size:13px;color:var(--ink-soft);margin:0 0 10px;font-weight:700;}
+  .swatches{display:flex;flex-wrap:wrap;gap:8px;}
+  .swatch{
+    width:26px;height:26px;border-radius:50%;border:2px solid var(--white);
+    box-shadow:0 0 0 1px var(--line);cursor:pointer;
+  }
+  .swatch.sel{box-shadow:0 0 0 2px var(--rose-dark);}
+  .chip-list{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    border:1px solid var(--line);background:var(--cream);border-radius:8px;
+    padding:6px 12px;font-size:13px;cursor:pointer;font-weight:600;
+  }
+  .chip.sel{background:var(--ink);color:var(--white);border-color:var(--ink);}
+  .clear-filters{font-size:13px;color:var(--rose-dark);font-weight:700;cursor:pointer;}
+
+  .products-col{flex:1;min-width:0;}
+  .products-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .products-head h2{font-size:20px;}
+  .count-pill{font-size:13px;color:var(--ink-soft);}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media(max-width:1080px){.grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr);} .layout{flex-direction:column;} aside.filters{width:100%;position:static;}}
+  @media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:12px;}}
+
+  .card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;position:relative;transition:.2s;
+  }
+  .card:hover{box-shadow:var(--shadow);transform:translateY(-3px);}
+  .card .imgwrap{position:relative;aspect-ratio:3/4;background:var(--blush);overflow:hidden;cursor:pointer;}
+  .card .imgwrap img{width:100%;height:100%;object-fit:cover;}
+  .heart{
+    position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;
+    background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;
+    font-size:15px;z-index:2;
+  }
+  .heart.on{color:var(--rose-dark);}
+  .tag-badge{
+    position:absolute;top:10px;right:10px;background:var(--ink);color:#fff;
+    font-size:11px;padding:4px 10px;border-radius:999px;font-weight:700;z-index:2;
+  }
+  .stock-badge{
+    position:absolute;bottom:10px;right:10px;font-size:11px;padding:4px 10px;border-radius:999px;font-weight:700;z-index:2;
+  }
+  .stock-badge.out{background:#3a3330;color:#fff;}
+  .stock-badge.in{background:var(--gold-light);color:#5a4419;}
+  .card-body{padding:12px 14px 16px;}
+  .card-body .name{font-size:15px;font-weight:700;margin-bottom:4px;}
+  .card-body .price{color:var(--rose-dark);font-weight:800;font-size:15px;}
+  .card-body .price.na{color:var(--ink-soft);font-weight:600;font-size:13px;}
+  .card-body .swrow{display:flex;gap:5px;margin:8px 0;}
+  .card-body .swrow .sw{width:15px;height:15px;border-radius:50%;box-shadow:0 0 0 1px var(--line);}
+  .card-body .sizes{font-size:11px;color:var(--ink-soft);margin-bottom:10px;}
+  .add-btn{
+    width:100%;background:var(--ink);color:#fff;border:none;border-radius:9px;
+    padding:9px;font-weight:700;font-size:13px;transition:.2s;
+  }
+  .add-btn:hover{background:var(--rose-dark);}
+  .add-btn:disabled{background:#cfc4bc;cursor:not-allowed;}
+
+  .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-soft);}
+
+  footer{margin-top:60px;background:var(--ink);color:#eee0d8;padding:36px 24px;text-align:center;font-size:13px;}
+  footer .fbrand{font-family:'PeshangBold';font-size:20px;margin-bottom:8px;}
+  .toast{
+    position:fixed;bottom:22px;right:50%;transform:translateX(50%);
+    background:var(--ink);color:#fff;padding:10px 22px;border-radius:999px;
+    font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:100;
+  }
+  .toast.show{opacity:1;transform:translateX(50%) translateY(-6px);}
+  .skeleton{background:linear-gradient(90deg,var(--blush) 25%,var(--blush-deep) 37%,var(--blush) 63%);background-size:400% 100%;animation:sk 1.4s infinite;}
+  @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
+  .config-warning{max-width:1280px;margin:16px auto 0;padding:14px 24px;background:#FDECEA;border:1px solid #F3C4BC;border-radius:10px;color:#8a3a2c;font-size:13px;margin-inline:24px;}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <img class="brand-mark" src="https://github.com/01-Nova/leenpage/blob/main/image-removebg-preview.png" alt="Leen Store logo">
-    <div class="eyebrow-thread"><span class="thread-line" style="width:24px"></span><span>Leen Store</span><span class="thread-line" style="width:24px"></span></div>
-    <h1>Leen Store</h1>
-    <p class="tagline"></p>
-    <a class="hero-cta" href="#" id="hero-ig">کڕین لە ئینستاگرام</a>
-    <div class="stitch-divider"></div>
+<!-- ============ Header ============ -->
+<header class="site">
+  <div class="header-inner">
+    <div class="logo">Leen</div>
+    <nav class="main-nav" id="mainNav">
+      <a href="#" data-cat="" class="active">هەمووی</a>
+      <a href="#" data-cat="poshak">کراس</a>
+      <a href="#" data-cat="janta">جانتا</a>
+      <a href="#" data-cat="pelaw">پێڵاو</a>
+      <a href="#" data-cat="exsosarat">خشڵ</a>
+    </nav>
+    <div class="search-box">
+      <span>🔍</span>
+      <input id="searchInput" placeholder="گەڕان بۆ کاڵاکان...">
+    </div>
+    <div class="header-actions">
+      <div class="icon-btn" title="دڵخوازەکان">❤</div>
+    </div>
   </div>
 </header>
 
-<div class="filters-bar">
-  <nav class="filters wrap" id="filters" aria-label="پاڵاوتن بەپێی جۆر"></nav>
+<div id="configWarning" class="config-warning" style="display:none;">
+  ⚠️ تکایە SUPABASE_URL و SUPABASE_ANON_KEY لە سەرەوەی فایلی client.html پڕبکەرەوە بۆ ئەوەی داتا لە Supabase وەربگیرێت.
 </div>
 
-<main class="catalog wrap" id="catalog" aria-live="polite">
-  <p class="state-message">کۆلێکشنەکە بار دەکرێت…</p>
-</main>
+<!-- ============ Hero banners ============ -->
+<div class="hero-wrap">
+  <div class="hero" id="hero"></div>
+</div>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <p>شتێکت بەدڵ بوو؟ لەسەر هەر پارچەیەک کلیک بکە یان ڕاستەوخۆ نامەمان بۆ بنێرە —<br>قەبارە و بەردەستبوونەکە لە دایرێکت پشتڕاست دەکەینەوە.</p>
-    <a class="ig-button" href="#" id="footer-ig" target="_blank" rel="noopener">@leen.store</a>
+<!-- ============ Categories ============ -->
+<div class="cat-strip" id="catStrip"></div>
+
+<!-- ============ Products + filters ============ -->
+<div class="layout">
+  <aside class="filters">
+    <h3>فلتەرکردن</h3>
+
+    <div class="filter-group">
+      <h4>ڕەنگ</h4>
+      <div class="swatches" id="colorFilters"></div>
+    </div>
+
+    <div class="filter-group">
+      <h4>قەبارە</h4>
+      <div class="chip-list" id="sizeFilters"></div>
+    </div>
+
+    <div class="filter-group">
+      <h4>بەردەستی</h4>
+      <div class="chip-list">
+        <div class="chip" data-avail="in">بەردەستە</div>
+        <div class="chip" data-avail="out">نەماوە</div>
+      </div>
+    </div>
+
+    <div class="clear-filters" id="clearFilters">سڕینەوەی هەموو فلتەرەکان</div>
+  </aside>
+
+  <div class="products-col">
+    <div class="products-head">
+      <h2 id="sectionTitle">کاڵاکان</h2>
+      <span class="count-pill" id="countPill"></span>
+    </div>
+    <div class="grid" id="grid">
+      <div class="card"><div class="imgwrap skeleton"></div></div>
+      <div class="card"><div class="imgwrap skeleton"></div></div>
+      <div class="card"><div class="imgwrap skeleton"></div></div>
+      <div class="card"><div class="imgwrap skeleton"></div></div>
+    </div>
   </div>
+</div>
+
+<footer>
+  <div class="fbrand">Leen</div>
+  <div>هەموو مافەکان پارێزراون © <span id="yr"></span></div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast"></div>
+
 <script>
-  // ====== SETTINGS ======
-  const SUPABASE_URL = "https://rfxwamiiqasjdforomcp.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_QRK5k5pd44w_A1UY7iHq6g_YxiPwq4W";
-  const INSTAGRAM_USERNAME = "leen.clothing.store";
-  const FALLBACK_TYPE = "هیتر";
-  // =======================================
+/* ============================================================
+   1) Supabase + Instagram config — پڕی بکەوە
+============================================================ */
+const SUPABASE_URL = 'https://kwzktrpdwnbdkkkyezbr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Zsb2iRfeo1dHMtXwf4XGBQ_KMQznKs4';
+const INSTAGRAM_USERNAME = 'leen.clothing.store'; // بێ @
 
-  const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_USERNAME}`;
-  document.getElementById("footer-ig").href = INSTAGRAM_URL;
-  document.getElementById("footer-ig").textContent = "@" + INSTAGRAM_USERNAME;
-  document.getElementById("hero-ig").href = INSTAGRAM_URL;
-  document.getElementById("hero-ig").target = "_blank";
-  document.getElementById("hero-ig").rel = "noopener";
-
-  const catalog = document.getElementById("catalog");
-  const filtersEl = document.getElementById("filters");
-
-  let products = [];
-  let activeType = "هەموو";
-
-  function escapeHtml(str){
-    return (str || "").replace(/[&<>"']/g, m => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[m]));
+let supa = null;
+try{
+  if(!SUPABASE_URL.includes('YOUR-PROJECT')){
+    supa = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    document.getElementById('configWarning').style.display = 'block';
   }
+}catch(e){ console.error(e); }
 
-  function isValidCssColor(value){
-    const s = new Option().style;
-    s.color = value;
-    return s.color !== "";
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const CATEGORY_LABELS = { poshak:'کراس', janta:'جانتا', pelaw:'پێڵاو', exsosarat:'خشڵ' };
+const CATEGORY_ICONS  = { poshak:'👗', janta:'👜', pelaw:'👠', exsosarat:'💍' };
+
+let categories = [];
+let allProducts = [];
+let state = { cat:'', colors:new Set(), sizes:new Set(), avail:new Set(), q:'' };
+let wishlist = new Set(JSON.parse(localStorage.getItem('wishlist')||'[]'));
+
+/* ============================================================
+   2) Load banners
+============================================================ */
+async function loadBanners(){
+  const hero = document.getElementById('hero');
+  if(!supa){
+    hero.innerHTML = `<div class="hero-empty">بانەرەکان لێرە دەردەکەون کاتێک Supabase پەیوەستبێت</div>`;
+    return;
   }
-
-  function getType(p){
-    return (p.type && String(p.type).trim()) || FALLBACK_TYPE;
+  const { data, error } = await supa.from('banners').select('*').eq('active', true).order('sort_order');
+  if(error || !data || !data.length){
+    hero.innerHTML = `<div class="hero-empty">هیچ بانەرێک نییە — لە پەڕەی ئەدمین یەکێک زیادبکە</div>`;
+    return;
   }
+  hero.innerHTML = data.map((b,i)=>`
+    <div class="hero-slide ${i===0?'active':''}" data-i="${i}">
+      <img src="${b.image_url||''}" alt="${escapeHtml(b.title||'')}" loading="${i===0?'eager':'lazy'}">
+      ${b.subtitle ? `
+      <div class="hero-text">
+        <div>
+          <h2>${escapeHtml(b.title||'')}</h2>
+          <p>${escapeHtml(b.subtitle)}</p>
+          <a class="btn-primary" href="${b.link_url||'#'}">${escapeHtml(b.button_text||'کڕین بکە')}</a>
+        </div>
+      </div>` : (b.link_url ? `<a class="hero-text" style="background:transparent;" href="${b.link_url}" aria-label="${escapeHtml(b.title||'')}"></a>` : '')}
+    </div>
+  `).join('') + `<div class="hero-dots">${data.map((_,i)=>`<span class="${i===0?'active':''}" data-i="${i}"></span>`).join('')}</div>`;
 
-  function renderFilters(types){
-    const tabs = ["هەموو", ...types];
-    filtersEl.innerHTML = tabs.map(t => `
-      <button class="chip ${t === activeType ? "active" : ""}" data-type="${escapeHtml(t)}">
-        ${escapeHtml(t)}
-      </button>
-    `).join("");
+  let idx = 0;
+  const slides = hero.querySelectorAll('.hero-slide');
+  const dots = hero.querySelectorAll('.hero-dots span');
+  function show(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    dots.forEach(d=>d.classList.remove('active'));
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+    idx = i;
+  }
+  dots.forEach(d=>d.addEventListener('click',()=>show(+d.dataset.i)));
+  if(data.length>1){
+    setInterval(()=> show((idx+1)%data.length), 5000);
+  }
+}
 
-    filtersEl.querySelectorAll(".chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activeType = btn.dataset.type;
-        renderFilters(types);
-        renderCatalog();
-      });
+/* ============================================================
+   3) Load categories
+============================================================ */
+async function loadCategories(){
+  const strip = document.getElementById('catStrip');
+  if(!supa){ strip.innerHTML=''; return; }
+  const { data } = await supa.from('categories').select('*').order('sort_order');
+  categories = data || [];
+  strip.innerHTML = categories.map(c=>`
+    <a class="cat-card" data-cat="${c.slug}" href="#">
+      <div class="emoji">${c.icon || CATEGORY_ICONS[c.slug] || '🛍'}</div>
+      <span>${escapeHtml(c.name)}</span>
+    </a>
+  `).join('');
+  strip.querySelectorAll('.cat-card').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.preventDefault();
+      setCategory(el.dataset.cat);
     });
+  });
+}
+
+/* ============================================================
+   4) Load products
+============================================================ */
+async function loadProducts(){
+  if(!supa) return;
+  const { data, error } = await supa.from('products').select('*, categories(slug,name)').order('created_at',{ascending:false});
+  if(error){ console.error(error); return; }
+  allProducts = data || [];
+  buildFilterOptions();
+  render();
+}
+
+function buildFilterOptions(){
+  const colorSet = new Set();
+  const sizeSet = new Set();
+  allProducts.forEach(p=>{
+    (p.colors||[]).forEach(c=>colorSet.add(c));
+    (p.sizes||[]).forEach(s=>sizeSet.add(s));
+  });
+  const colorBox = document.getElementById('colorFilters');
+  colorBox.innerHTML = [...colorSet].map(c=>`<div class="swatch" style="background:${c}" data-color="${c}" title="${c}"></div>`).join('');
+  colorBox.querySelectorAll('.swatch').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const c = el.dataset.color;
+      state.colors.has(c) ? state.colors.delete(c) : state.colors.add(c);
+      el.classList.toggle('sel');
+      render();
+    });
+  });
+
+  const sizeBox = document.getElementById('sizeFilters');
+  sizeBox.innerHTML = [...sizeSet].map(s=>`<div class="chip" data-size="${s}">${escapeHtml(s)}</div>`).join('');
+  sizeBox.querySelectorAll('.chip').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const s = el.dataset.size;
+      state.sizes.has(s) ? state.sizes.delete(s) : state.sizes.add(s);
+      el.classList.toggle('sel');
+      render();
+    });
+  });
+}
+
+document.querySelectorAll('[data-avail]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    const v = el.dataset.avail;
+    state.avail.has(v) ? state.avail.delete(v) : state.avail.add(v);
+    el.classList.toggle('sel');
+    render();
+  });
+});
+
+document.getElementById('clearFilters').addEventListener('click', ()=>{
+  state = { cat:state.cat, colors:new Set(), sizes:new Set(), avail:new Set(), q:'' };
+  document.getElementById('searchInput').value='';
+  document.querySelectorAll('.swatch.sel,.chip.sel').forEach(el=>el.classList.remove('sel'));
+  render();
+});
+
+document.getElementById('searchInput').addEventListener('input', e=>{
+  state.q = e.target.value.trim();
+  render();
+});
+
+document.getElementById('mainNav').addEventListener('click', e=>{
+  const a = e.target.closest('a');
+  if(!a) return;
+  e.preventDefault();
+  setCategory(a.dataset.cat);
+});
+
+function setCategory(slug){
+  state.cat = slug;
+  document.querySelectorAll('#mainNav a').forEach(a=>a.classList.toggle('active', a.dataset.cat===slug));
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.toggle('active', c.dataset.cat===slug));
+  document.getElementById('sectionTitle').textContent = slug ? (CATEGORY_LABELS[slug]||'کاڵاکان') : 'کاڵاکانی نوێ';
+  render();
+}
+
+/* ============================================================
+   5) Render
+============================================================ */
+function render(){
+  const grid = document.getElementById('grid');
+  let list = allProducts.filter(p=>{
+    if(state.cat && p.categories?.slug !== state.cat) return false;
+    if(state.q && !p.name?.toLowerCase().includes(state.q.toLowerCase())) return false;
+    if(state.colors.size && !(p.colors||[]).some(c=>state.colors.has(c))) return false;
+    if(state.sizes.size && !(p.sizes||[]).some(s=>state.sizes.has(s))) return false;
+    if(state.avail.size){
+      const key = p.availability ? 'in' : 'out';
+      if(!state.avail.has(key)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('countPill').textContent = `${list.length} کاڵا`;
+
+  if(!list.length){
+    grid.innerHTML = `<div class="empty-state">هیچ کاڵایەک نەدۆزرایەوە بەم فلتەرانە 🙁</div>`;
+    return;
   }
 
-  function cardHtml(p){
-    const colors = Array.isArray(p.colors) ? p.colors : [];
-    const sizes = Array.isArray(p.sizes) ? p.sizes : [];
-
-    const swatchHtml = colors.length
-      ? colors.map(c => {
-          const cssColor = isValidCssColor(c) ? c : "#cccccc";
-          return `<span class="swatch" style="background:${escapeHtml(cssColor)}" title="${escapeHtml(c)}"></span>`;
-        }).join("")
-      : `<span class="swatch-empty">یەک ڕەنگ</span>`;
-
-    const sizeHtml = sizes.length
-      ? sizes.map(size => `<span class="size-pill">${escapeHtml(String(size))}</span>`).join("")
-      : "";
-
-    const inStock = p.availability !== false;
-    const displayName = p.name || getType(p);
-
+  grid.innerHTML = list.map(p=>{
+    const inWish = wishlist.has(p.id);
+    const priceHtml = (p.price===null || p.price===undefined)
+      ? `<div class="price na">نرخ لەسەر داواکاری</div>`
+      : `<div class="price">${Number(p.price).toLocaleString()} د.ع</div>`;
     return `
-      <article class="card" tabindex="0" role="button"
-                aria-label="${escapeHtml(displayName)} — بۆ داواکردن لە ئینستاگرام نامەمان بۆ بنێرە"
-                data-id="${p.id}">
-        <div class="card-media">
-          <img src="${escapeHtml(p.image)}" alt="${escapeHtml(displayName)}" loading="lazy">
-          ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
-          <span class="status-badge ${inStock ? "" : "unavailable"}">
-            <span class="status-dot"></span>${inStock ? "بەردەستە" : "تەواوبووە"}
-          </span>
-        </div>
-        <div class="card-body">
-          <h3 class="card-name">${escapeHtml(displayName)}</h3>
-          ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
-          <div class="swatch-row">${swatchHtml}</div>
-          <div class="size-row">${sizeHtml}</div>
-          <p class="card-hint">بۆ داواکردن نامە بنێرە ←</p>
-        </div>
-      </article>
-    `;
-  }
+    <div class="card">
+      <div class="imgwrap" data-id="${p.id}" data-name="${escapeHtml(p.name)}">
+        <img src="${p.image_url||''}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.style.opacity=0">
+        <div class="heart ${inWish?'on':''}" data-id="${p.id}">${inWish?'❤':'♡'}</div>
+        ${p.tag?`<div class="tag-badge">${escapeHtml(p.tag)}</div>`:''}
+        <div class="stock-badge ${p.availability?'in':'out'}">${p.availability?'بەردەستە':'نەماوە'}</div>
+      </div>
+      <div class="card-body">
+        <div class="name">${escapeHtml(p.name)}</div>
+        ${priceHtml}
+        <div class="swrow">${(p.colors||[]).slice(0,5).map(c=>`<div class="sw" style="background:${c}"></div>`).join('')}</div>
+        ${(p.sizes||[]).length?`<div class="sizes">قەبارە: ${p.sizes.join(' • ')}</div>`:''}
+        <button class="add-btn" ${p.availability?'':'disabled'} data-id="${p.id}" data-name="${escapeHtml(p.name)}">
+          ${p.availability?'داواکردن لە ئینستاگرام':'نەماوە'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
 
-  function renderCatalog(){
-    if (products.length === 0){
-      catalog.innerHTML = `<p class="state-message">هێشتا هیچ کاڵایەک زیاد نەکراوە.</p>`;
-      return;
-    }
-
-    const groups = new Map();
-    products.forEach(p => {
-      const t = getType(p);
-      if (!groups.has(t)) groups.set(t, []);
-      groups.get(t).push(p);
+  grid.querySelectorAll('.heart').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const id = el.dataset.id;
+      wishlist.has(id) ? wishlist.delete(id) : wishlist.add(id);
+      localStorage.setItem('wishlist', JSON.stringify([...wishlist]));
+      render();
     });
+  });
+  grid.querySelectorAll('.imgwrap').forEach(el=>{
+    el.addEventListener('click', ()=> openInstagramDM(el.dataset.name));
+  });
+  grid.querySelectorAll('.add-btn:not([disabled])').forEach(el=>{
+    el.addEventListener('click', ()=> openInstagramDM(el.dataset.name));
+  });
+}
 
-    const typesToShow = activeType === "هەموو" ? [...groups.keys()] : [activeType];
-
-    const sections = typesToShow
-      .filter(t => groups.has(t))
-      .map(t => {
-        const items = groups.get(t);
-        return `
-          <section class="type-section" id="type-${escapeHtml(t.replace(/\s+/g,'-').toLowerCase())}">
-            <div class="type-heading">
-              <h2>${escapeHtml(t)}</h2>
-              <span class="type-count">${items.length} پارچە</span>
-            </div>
-            <div class="grid">${items.map(cardHtml).join("")}</div>
-          </section>
-        `;
-      });
-
-    catalog.innerHTML = sections.length
-      ? sections.join("")
-      : `<p class="state-message">هێشتا هیچ کاڵایەک لەم جۆرەدا نییە — دواتر سەردانمان بکەرەوە.</p>`;
-
-    catalog.querySelectorAll(".card").forEach(card => {
-      const open = () => window.open(INSTAGRAM_URL, "_blank", "noopener");
-      card.addEventListener("click", open);
-      card.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); }
-      });
-    });
+function openInstagramDM(productName){
+  if(!INSTAGRAM_USERNAME || INSTAGRAM_USERNAME==='your_instagram_username'){
+    showToast('تکایە یوزەرنەیمی ئینستاگرام زیادبکە');
+    return;
   }
+  window.open(`https://instagram.com/${INSTAGRAM_USERNAME}`, '_blank');
+}
 
-  async function loadProducts(){
-    if (SUPABASE_URL.includes("YOUR_SUPABASE") || SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")){
-      catalog.innerHTML = `<p class="state-message">بۆ بارکردنی کۆلێکشنەکە، ناونیشانی Supabase و anon key لە سەرەتای سکریپتەکە دابنێ.</p>`;
-      return;
-    }
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
 
-    try{
-      const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      const { data, error } = await client
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: true });
+function escapeHtml(str){
+  return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
 
-      if (error) throw error;
-
-      products = data || [];
-      if (products.length === 0){
-        catalog.innerHTML = `<p class="state-message">هێشتا هیچ کاڵایەک زیاد نەکراوە.</p>`;
-        return;
-      }
-
-      const types = [...new Set(products.map(getType))];
-      renderFilters(types);
-      renderCatalog();
-    } catch (err){
-      console.error(err);
-      catalog.innerHTML = `<p class="state-message">ئێستا ناتوانرێت کۆلێکشنەکە بار بکرێت. تکایە پەڕەکە نوێ بکەرەوە یان ڕێکخستنەکانی Supabase بپشکنە.</p>`;
-    }
-  }
-
-  loadProducts();
+/* ============================================================
+   Init
+============================================================ */
+loadBanners();
+loadCategories();
+loadProducts();
 </script>
-
 </body>
 </html>
