@@ -217,8 +217,16 @@
     font-family:'Cormorant Garamond',serif;
     font-weight:600;
     font-size:1.28rem;
-    margin:0 0 8px;
+    margin:0 0 4px;
     color:var(--ink);
+  }
+
+  .card-tag{
+    font-size:0.75rem;
+    letter-spacing:0.03em;
+    color:var(--rose-deep);
+    margin:0 0 8px;
+    text-transform:uppercase;
   }
 
   .card-detail{
@@ -350,8 +358,6 @@
     }[m]));
   }
 
-  // Best-effort mapping so plain color names (e.g. "red", "sand") render as swatches.
-  // Falls back to showing the name as text if the browser can't resolve it as a CSS color.
   function isValidCssColor(value){
     const s = new Option().style;
     s.color = value;
@@ -399,20 +405,21 @@
         : "";
 
       const inStock = p.availability !== false;
+      const displayName = p.name || p.tag || "Item";
 
       return `
         <article class="card" tabindex="0" role="button"
-                  aria-label="${escapeHtml(p.tag || "Item")} — message us on Instagram to order"
+                  aria-label="${escapeHtml(displayName)} — message us on Instagram to order"
                   data-id="${p.id}">
           <div class="card-media">
-            <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.tag || "Product image")}" loading="lazy">
+            <img src="${escapeHtml(p.image)}" alt="${escapeHtml(displayName)}" loading="lazy">
             ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
             <span class="status-badge ${inStock ? "" : "unavailable"}">
               <span class="status-dot"></span>${inStock ? "In stock" : "Sold out"}
             </span>
           </div>
           <div class="card-body">
-            ${p.tag ? `<h3 class="card-name">${escapeHtml(p.tag)}</h3>` : ""}
+            <h3 class="card-name">${escapeHtml(displayName)}</h3>
             ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
             <div class="swatch-row">${swatchHtml}</div>
             <div class="size-row">${sizeHtml}</div>
