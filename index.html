@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Leen Store</title>
+<title>فرۆشگای لین</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   /* ============ Tokens (light, always) ============ */
@@ -43,7 +43,7 @@
     background-image:radial-gradient(rgba(193,123,108,0.06) 1px, transparent 1px);
     background-size:15px 15px;
     color:var(--ink);
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
 
@@ -89,7 +89,7 @@
     color:var(--gold);
   }
   .eyebrow-thread span{
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     font-size:0.78rem;
     letter-spacing:0.08em;
     color:var(--ink-soft);
@@ -100,7 +100,7 @@
   }
 
   .hero h1{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
     font-weight:600;
     font-size:clamp(2.6rem,7vw,4rem);
     letter-spacing:0.01em;
@@ -109,7 +109,7 @@
   }
 
   .tagline{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
     font-style:italic;
     font-size:1.2rem;
     color:var(--ink-soft);
@@ -126,7 +126,7 @@
     padding:12px 26px;
     background:var(--rose-deep);
     color:#fff;
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     font-weight:600;
     font-size:0.92rem;
     border-radius:999px;
@@ -165,7 +165,7 @@
 
   .chip{
     flex:0 0 auto;
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     font-size:0.85rem;
     padding:9px 20px;
     border-radius:999px;
@@ -197,7 +197,7 @@
     margin-bottom:24px;
   }
   .type-heading h2{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
     font-weight:600;
     font-size:clamp(1.7rem,3.4vw,2.3rem);
     margin:0;
@@ -220,7 +220,7 @@
     text-align:center;
     padding:70px 20px;
     color:var(--ink-soft);
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
     font-style:italic;
     font-size:1.25rem;
   }
@@ -233,7 +233,7 @@
     border:1px solid var(--line);
     overflow:hidden;
     cursor:pointer;
-    text-align:left;
+    text-align:right;
     transition:transform 0.2s ease, box-shadow 0.2s ease;
   }
   .card:hover, .card:focus-visible{
@@ -259,21 +259,21 @@
   .swing-tag{
     position:absolute;
     top:14px;
-    left:-6px;
+    right:-6px;
     background:var(--rose-deep);
     color:#fff;
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     font-size:0.72rem;
     letter-spacing:0.03em;
     padding:5px 12px 5px 16px;
-    border-radius:0 4px 4px 0;
+    border-radius:4px 0 0 4px;
     transform:rotate(-2deg);
     box-shadow:0 3px 6px rgba(0,0,0,0.14);
   }
   .swing-tag::before{
     content:"";
     position:absolute;
-    left:5px; top:50%;
+    right:5px; top:50%;
     width:4px; height:4px;
     border-radius:50%;
     background:#fff;
@@ -282,7 +282,7 @@
 
   .status-badge{
     position:absolute;
-    top:14px; right:14px;
+    top:14px; left:14px;
     display:flex;
     align-items:center;
     gap:6px;
@@ -299,7 +299,7 @@
   .card-body{ padding:17px 17px 19px; }
 
   .card-name{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Noto Sans Arabic','Cormorant Garamond',serif;
     font-weight:600;
     font-size:1.32rem;
     margin:0 0 8px;
@@ -326,7 +326,7 @@
   .size-row{ display:flex; flex-wrap:wrap; gap:6px; }
   .size-pill{
     font-size:0.74rem;
-    font-family:'Karla',sans-serif;
+    font-family:'Noto Sans Arabic','Karla',sans-serif;
     min-width:28px;
     padding:0 7px;
     height:25px;
@@ -391,24 +391,24 @@
   <div class="wrap">
     <img class="brand-mark" src="https://github.com/01-Nova/leenpage/blob/main/image-removebg-preview.png" alt="Leen Store logo">
     <div class="eyebrow-thread"><span class="thread-line" style="width:24px"></span><span>Leen Store</span><span class="thread-line" style="width:24px"></span></div>
-    <h1>The Leen Collection</h1>
-    <p class="tagline">Pieces cut with care, kept in small numbers — each one styled and shipped by hand.</p>
-    <a class="hero-cta" href="#" id="hero-ig">Shop on Instagram</a>
+    <h1>Leen Store</h1>
+    <p class="tagline"></p>
+    <a class="hero-cta" href="#" id="hero-ig">کڕین لە ئینستاگرام</a>
     <div class="stitch-divider"></div>
   </div>
 </header>
 
 <div class="filters-bar">
-  <nav class="filters wrap" id="filters" aria-label="Filter by category"></nav>
+  <nav class="filters wrap" id="filters" aria-label="پاڵاوتن بەپێی جۆر"></nav>
 </div>
 
 <main class="catalog wrap" id="catalog" aria-live="polite">
-  <p class="state-message">Loading the collection…</p>
+  <p class="state-message">کۆلێکشنەکە بار دەکرێت…</p>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
-    <p>See something you love? Tap any piece, or message us directly —<br>we'll confirm sizing and availability over DM.</p>
+    <p>شتێکت بەدڵ بوو؟ لەسەر هەر پارچەیەک کلیک بکە یان ڕاستەوخۆ نامەمان بۆ بنێرە —<br>قەبارە و بەردەستبوونەکە لە دایرێکت پشتڕاست دەکەینەوە.</p>
     <a class="ig-button" href="#" id="footer-ig" target="_blank" rel="noopener">@leen.store</a>
   </div>
 </footer>
@@ -419,7 +419,7 @@
   const SUPABASE_URL = "https://rfxwamiiqasjdforomcp.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_QRK5k5pd44w_A1UY7iHq6g_YxiPwq4W";
   const INSTAGRAM_USERNAME = "leen.clothing.store";
-  const FALLBACK_TYPE = "Other";
+  const FALLBACK_TYPE = "هیتر";
   // =======================================
 
   const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_USERNAME}`;
@@ -433,7 +433,7 @@
   const filtersEl = document.getElementById("filters");
 
   let products = [];
-  let activeType = "All";
+  let activeType = "هەموو";
 
   function escapeHtml(str){
     return (str || "").replace(/[&<>"']/g, m => ({
@@ -452,7 +452,7 @@
   }
 
   function renderFilters(types){
-    const tabs = ["All", ...types];
+    const tabs = ["هەموو", ...types];
     filtersEl.innerHTML = tabs.map(t => `
       <button class="chip ${t === activeType ? "active" : ""}" data-type="${escapeHtml(t)}">
         ${escapeHtml(t)}
@@ -477,7 +477,7 @@
           const cssColor = isValidCssColor(c) ? c : "#cccccc";
           return `<span class="swatch" style="background:${escapeHtml(cssColor)}" title="${escapeHtml(c)}"></span>`;
         }).join("")
-      : `<span class="swatch-empty">One color</span>`;
+      : `<span class="swatch-empty">یەک ڕەنگ</span>`;
 
     const sizeHtml = sizes.length
       ? sizes.map(size => `<span class="size-pill">${escapeHtml(String(size))}</span>`).join("")
@@ -488,13 +488,13 @@
 
     return `
       <article class="card" tabindex="0" role="button"
-                aria-label="${escapeHtml(displayName)} — message us on Instagram to order"
+                aria-label="${escapeHtml(displayName)} — بۆ داواکردن لە ئینستاگرام نامەمان بۆ بنێرە"
                 data-id="${p.id}">
         <div class="card-media">
           <img src="${escapeHtml(p.image)}" alt="${escapeHtml(displayName)}" loading="lazy">
           ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
           <span class="status-badge ${inStock ? "" : "unavailable"}">
-            <span class="status-dot"></span>${inStock ? "In stock" : "Sold out"}
+            <span class="status-dot"></span>${inStock ? "بەردەستە" : "تەواوبووە"}
           </span>
         </div>
         <div class="card-body">
@@ -502,7 +502,7 @@
           ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
           <div class="swatch-row">${swatchHtml}</div>
           <div class="size-row">${sizeHtml}</div>
-          <p class="card-hint">Message to order →</p>
+          <p class="card-hint">بۆ داواکردن نامە بنێرە ←</p>
         </div>
       </article>
     `;
@@ -510,7 +510,7 @@
 
   function renderCatalog(){
     if (products.length === 0){
-      catalog.innerHTML = `<p class="state-message">No items added yet.</p>`;
+      catalog.innerHTML = `<p class="state-message">هێشتا هیچ کاڵایەک زیاد نەکراوە.</p>`;
       return;
     }
 
@@ -521,7 +521,7 @@
       groups.get(t).push(p);
     });
 
-    const typesToShow = activeType === "All" ? [...groups.keys()] : [activeType];
+    const typesToShow = activeType === "هەموو" ? [...groups.keys()] : [activeType];
 
     const sections = typesToShow
       .filter(t => groups.has(t))
@@ -531,7 +531,7 @@
           <section class="type-section" id="type-${escapeHtml(t.replace(/\s+/g,'-').toLowerCase())}">
             <div class="type-heading">
               <h2>${escapeHtml(t)}</h2>
-              <span class="type-count">${items.length} piece${items.length === 1 ? "" : "s"}</span>
+              <span class="type-count">${items.length} پارچە</span>
             </div>
             <div class="grid">${items.map(cardHtml).join("")}</div>
           </section>
@@ -540,7 +540,7 @@
 
     catalog.innerHTML = sections.length
       ? sections.join("")
-      : `<p class="state-message">No items in this category yet — check back soon.</p>`;
+      : `<p class="state-message">هێشتا هیچ کاڵایەک لەم جۆرەدا نییە — دواتر سەردانمان بکەرەوە.</p>`;
 
     catalog.querySelectorAll(".card").forEach(card => {
       const open = () => window.open(INSTAGRAM_URL, "_blank", "noopener");
@@ -553,7 +553,7 @@
 
   async function loadProducts(){
     if (SUPABASE_URL.includes("YOUR_SUPABASE") || SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")){
-      catalog.innerHTML = `<p class="state-message">Add your Supabase URL and anon key at the top of the script to load the collection.</p>`;
+      catalog.innerHTML = `<p class="state-message">بۆ بارکردنی کۆلێکشنەکە، ناونیشانی Supabase و anon key لە سەرەتای سکریپتەکە دابنێ.</p>`;
       return;
     }
 
@@ -568,7 +568,7 @@
 
       products = data || [];
       if (products.length === 0){
-        catalog.innerHTML = `<p class="state-message">No items added yet.</p>`;
+        catalog.innerHTML = `<p class="state-message">هێشتا هیچ کاڵایەک زیاد نەکراوە.</p>`;
         return;
       }
 
@@ -577,7 +577,7 @@
       renderCatalog();
     } catch (err){
       console.error(err);
-      catalog.innerHTML = `<p class="state-message">Couldn't load the collection right now. Please refresh, or check the Supabase settings in the script.</p>`;
+      catalog.innerHTML = `<p class="state-message">ئێستا ناتوانرێت کۆلێکشنەکە بار بکرێت. تکایە پەڕەکە نوێ بکەرەوە یان ڕێکخستنەکانی Supabase بپشکنە.</p>`;
     }
   }
 
