@@ -217,8 +217,15 @@
     font-family:'Cormorant Garamond',serif;
     font-weight:600;
     font-size:1.28rem;
-    margin:0 0 10px;
+    margin:0 0 8px;
     color:var(--ink);
+  }
+
+  .card-detail{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+    line-height:1.4;
   }
 
   .swatch-row{
@@ -226,6 +233,7 @@
     align-items:center;
     gap:7px;
     margin-bottom:12px;
+    flex-wrap:wrap;
   }
   .swatch{
     width:16px;
@@ -248,7 +256,8 @@
   .size-pill{
     font-size:0.72rem;
     font-family:'Karla',sans-serif;
-    width:28px;
+    min-width:28px;
+    padding:0 6px;
     height:24px;
     display:flex;
     align-items:center;
@@ -319,17 +328,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ====== SETTINGS — fill these in ======
-  const SUPABASE_URL = "https://vvwudzhqdslojgvyinyr.supabase.co";       // e.g. https://vvwudzhqdslojgvyinyr.supabase.co
-  const SUPABASE_ANON_KEY = "sb_publishable_WD0s_8VGoo9UpxZ1Xjf43A_btQtejkW";
-  const INSTAGRAM_USERNAME = "leen.clothing.store";                 // without the @
+  // ====== SETTINGS ======
+  const SUPABASE_URL = "https://rfxwamiiqasjdforomcp.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_QRK5k5pd44w_A1UY7iHq6g_YxiPwq4W";
+  const INSTAGRAM_USERNAME = "leen.clothing.store";
   // =======================================
 
   const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_USERNAME}`;
   document.getElementById("footer-ig").href = INSTAGRAM_URL;
   document.getElementById("footer-ig").textContent = "@" + INSTAGRAM_USERNAME;
 
-  const ALL_SIZES = [38, 40, 42, 44, 46, 48];
   const grid = document.getElementById("grid");
   const filtersEl = document.getElementById("filters");
 
@@ -340,6 +348,14 @@
     return (str || "").replace(/[&<>"']/g, m => ({
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
     }[m]));
+  }
+
+  // Best-effort mapping so plain color names (e.g. "red", "sand") render as swatches.
+  // Falls back to showing the name as text if the browser can't resolve it as a CSS color.
+  function isValidCssColor(value){
+    const s = new Option().style;
+    s.color = value;
+    return s.color !== "";
   }
 
   function renderFilters(){
@@ -363,40 +379,41 @@
     const list = activeTag === "All" ? products : products.filter(p => p.tag === activeTag);
 
     if (list.length === 0){
-      grid.innerHTML = `<p class="state-message">No dresses in this category yet — check back soon.</p>`;
+      grid.innerHTML = `<p class="state-message">No items in this category yet — check back soon.</p>`;
       return;
     }
 
     grid.innerHTML = list.map(p => {
-      const colors = (p.product_colors || []).sort((a,b) => a.sort_order - b.sort_order);
-      const sizeMap = {};
-      (p.product_sizes || []).forEach(s => { sizeMap[s.size] = s.is_available; });
+      const colors = Array.isArray(p.colors) ? p.colors : [];
+      const sizes = Array.isArray(p.sizes) ? p.sizes : [];
 
       const swatchHtml = colors.length
-        ? colors.map(c => `<span class="swatch" style="background:${escapeHtml(c.hex_code)}" title="${escapeHtml(c.color_name || "")}"></span>`).join("")
+        ? colors.map(c => {
+            const cssColor = isValidCssColor(c) ? c : "#cccccc";
+            return `<span class="swatch" style="background:${escapeHtml(cssColor)}" title="${escapeHtml(c)}"></span>`;
+          }).join("")
         : `<span class="swatch-empty">One color</span>`;
 
-      const sizeHtml = ALL_SIZES.map(size => {
-        const known = size in sizeMap;
-        const available = known ? sizeMap[size] : true;
-        return `<span class="size-pill ${available ? "" : "unavailable"}">${size}</span>`;
-      }).join("");
+      const sizeHtml = sizes.length
+        ? sizes.map(size => `<span class="size-pill">${escapeHtml(String(size))}</span>`).join("")
+        : "";
 
-      const inStock = p.is_available !== false;
+      const inStock = p.availability !== false;
 
       return `
         <article class="card" tabindex="0" role="button"
-                  aria-label="${escapeHtml(p.name)} — message us on Instagram to order"
+                  aria-label="${escapeHtml(p.tag || "Item")} — message us on Instagram to order"
                   data-id="${p.id}">
           <div class="card-media">
-            <img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">
+            <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.tag || "Product image")}" loading="lazy">
             ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
             <span class="status-badge ${inStock ? "" : "unavailable"}">
               <span class="status-dot"></span>${inStock ? "In stock" : "Sold out"}
             </span>
           </div>
           <div class="card-body">
-            <h3 class="card-name">${escapeHtml(p.name)}</h3>
+            ${p.tag ? `<h3 class="card-name">${escapeHtml(p.tag)}</h3>` : ""}
+            ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
             <div class="swatch-row">${swatchHtml}</div>
             <div class="size-row">${sizeHtml}</div>
             <p class="card-hint">Tap to DM us on Instagram to order →</p>
@@ -424,14 +441,14 @@
       const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const { data, error } = await client
         .from("products")
-        .select("*, product_colors(*), product_sizes(*)")
-        .order("sort_order", { ascending: true });
+        .select("*")
+        .order("created_at", { ascending: true });
 
       if (error) throw error;
 
       products = data || [];
       if (products.length === 0){
-        grid.innerHTML = `<p class="state-message">No dresses added yet.</p>`;
+        grid.innerHTML = `<p class="state-message">No items added yet.</p>`;
         return;
       }
       renderFilters();
