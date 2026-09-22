@@ -2,65 +2,140 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Leen Store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+
+  /* ============ Tokens (light, default) ============ */
   :root{
-    --paper:#efe6d3;
-    --paper-deep:#e4d7bd;
-    --card:#fbf6ea;
-    --ink:#33291f;
-    --ink-soft:#7a6c58;
-    --rose:#c98a82;
-    --rose-deep:#a9645d;
+    --paper:#f5ecdf;
+    --paper-deep:#ecdec4;
+    --card:#fffbf3;
+    --ink:#2e2417;
+    --ink-soft:#8c7a63;
+    --rose:#c48178;
+    --rose-deep:#9c5850;
     --gold:#ab8143;
     --sage:#7d8a63;
-    --muted:#a99d86;
-    --line:#d8c9a8;
-    --radius:14px;
+    --muted:#b3a488;
+    --line:#ddcda8;
+    --overlay:rgba(46,36,23,0.86);
+    --radius:16px;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ============ Dark (system) ============ */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#241d15;
+      --paper-deep:#2c2318;
+      --card:#2f271b;
+      --ink:#f1e6d3;
+      --ink-soft:#bba98d;
+      --rose:#dc9b90;
+      --rose-deep:#e4a89d;
+      --gold:#cfa35f;
+      --sage:#9fac81;
+      --muted:#8a7a63;
+      --line:#463a27;
+      --overlay:rgba(20,15,9,0.9);
+    }
+  }
+  /* ============ Dark (explicit) ============ */
+  :root[data-theme="dark"]{
+    --paper:#241d15;
+    --paper-deep:#2c2318;
+    --card:#2f271b;
+    --ink:#f1e6d3;
+    --ink-soft:#bba98d;
+    --rose:#dc9b90;
+    --rose-deep:#e4a89d;
+    --gold:#cfa35f;
+    --sage:#9fac81;
+    --muted:#8a7a63;
+    --line:#463a27;
+    --overlay:rgba(20,15,9,0.9);
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top, 0px);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
 
   body{
     margin:0;
     background-color:var(--paper);
-    background-image:
-      radial-gradient(rgba(60,45,20,0.05) 1px, transparent 1px);
-    background-size:14px 14px;
+    background-image:radial-gradient(rgba(120,95,50,0.06) 1px, transparent 1px);
+    background-size:15px 15px;
     color:var(--ink);
     font-family:'Karla',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
 
   a{color:inherit;}
+  img{max-width:100%;}
   :focus-visible{outline:2px solid var(--rose-deep); outline-offset:3px;}
 
-  /* ---------------- Header ---------------- */
-  .site-header{
-    max-width:1080px;
-    margin:0 auto;
-    padding:56px 24px 28px;
+  .wrap{max-width:1120px; margin:0 auto; padding-left:24px; padding-right:24px;}
+  @media (max-width:520px){ .wrap{padding-left:18px; padding-right:18px;} }
+
+  /* ---------------- Hero ---------------- */
+  .hero{
+    position:relative;
+    padding:68px 0 40px;
     text-align:center;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-120px; left:50%;
+    width:640px; height:320px;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(196,129,120,0.16), transparent 70%);
+    pointer-events:none;
   }
 
   .brand-mark{
-    width:79px;
-    height:56px;
-    margin:0 auto 14px;
+    width:64px;
+    height:auto;
+    margin:0 auto 18px;
     display:block;
     color:var(--rose-deep);
   }
 
-  .site-header h1{
+  .eyebrow-thread{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:16px;
+    color:var(--gold);
+  }
+  .eyebrow-thread span{
+    font-family:'Karla',sans-serif;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+  }
+  .eyebrow-thread .thread-line{
+    width:34px; height:1px;
+    background:var(--line);
+  }
+
+  .hero h1{
     font-family:'Cormorant Garamond',serif;
     font-weight:600;
-    font-size:clamp(2.4rem,6vw,3.4rem);
-    letter-spacing:0.02em;
+    font-size:clamp(2.6rem,7vw,4rem);
+    letter-spacing:0.01em;
     margin:0;
     color:var(--ink);
   }
@@ -68,66 +143,118 @@
   .tagline{
     font-family:'Cormorant Garamond',serif;
     font-style:italic;
-    font-size:1.15rem;
+    font-size:1.2rem;
     color:var(--ink-soft);
-    margin:10px 0 0;
+    margin:14px auto 0;
+    max-width:440px;
+    line-height:1.5;
   }
 
+  .hero-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:28px;
+    padding:12px 26px;
+    background:var(--rose-deep);
+    color:var(--card);
+    font-family:'Karla',sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(156,88,80,0.25);
+    transition:transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .hero-cta:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(156,88,80,0.32); }
+
   .stitch-divider{
-    width:180px;
+    width:220px;
     height:1px;
-    margin:26px auto 0;
+    margin:44px auto 0;
     border-top:1px dashed var(--gold);
-    opacity:0.7;
+    opacity:0.6;
   }
 
   /* ---------------- Filters ---------------- */
-  .filters{
-    max-width:1080px;
-    margin:0 auto;
-    padding:22px 24px 6px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
+  .filters-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
   }
+  .filters{
+    display:flex;
+    gap:10px;
+    padding:16px 0;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .filters::-webkit-scrollbar{display:none;}
 
   .chip{
+    flex:0 0 auto;
     font-family:'Karla',sans-serif;
-    font-size:0.82rem;
-    letter-spacing:0.03em;
-    padding:8px 18px;
+    font-size:0.85rem;
+    padding:9px 20px;
     border-radius:999px;
     border:1px solid var(--line);
     background:var(--card);
     color:var(--ink-soft);
     cursor:pointer;
+    white-space:nowrap;
     transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
-  .chip:hover{border-color:var(--rose-deep); color:var(--ink);}
+  .chip:hover{ border-color:var(--rose-deep); color:var(--ink); }
   .chip.active{
     background:var(--rose-deep);
     border-color:var(--rose-deep);
-    color:#fff6f0;
+    color:var(--card);
   }
 
-  /* ---------------- Grid ---------------- */
+  /* ---------------- Sections by type ---------------- */
+  .catalog{ padding:8px 0 30px; }
+
+  .type-section{ padding:44px 0 6px; }
+  .type-section + .type-section{ border-top:1px solid var(--line); }
+
+  .type-heading{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:24px;
+  }
+  .type-heading h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:clamp(1.7rem,3.4vw,2.3rem);
+    margin:0;
+    color:var(--ink);
+  }
+  .type-count{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    padding-bottom:4px;
+  }
+
   .grid{
-    max-width:1080px;
-    margin:0 auto;
-    padding:24px 24px 60px;
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-    gap:28px;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:26px;
   }
 
   .state-message{
-    grid-column:1/-1;
     text-align:center;
-    padding:50px 20px;
+    padding:70px 20px;
     color:var(--ink-soft);
     font-family:'Cormorant Garamond',serif;
-    font-size:1.2rem;
+    font-style:italic;
+    font-size:1.25rem;
   }
 
   /* ---------------- Card ---------------- */
@@ -136,15 +263,14 @@
     background:var(--card);
     border-radius:var(--radius);
     border:1px solid var(--line);
-    box-shadow:0 1px 0 rgba(60,45,20,0.04);
     overflow:hidden;
     cursor:pointer;
     text-align:left;
-    transition:transform 0.18s ease, box-shadow 0.18s ease;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
   }
   .card:hover, .card:focus-visible{
-    transform:translateY(-4px);
-    box-shadow:0 12px 22px rgba(60,45,20,0.12);
+    transform:translateY(-5px);
+    box-shadow:0 16px 30px rgba(46,36,23,0.14);
   }
 
   .card-media{
@@ -158,119 +284,86 @@
     height:100%;
     object-fit:cover;
     display:block;
+    transition:transform 0.4s ease;
   }
+  .card:hover .card-media img{ transform:scale(1.045); }
 
-  /* swing tag, corner label */
   .swing-tag{
     position:absolute;
-    top:12px;
+    top:14px;
     left:-6px;
     background:var(--rose-deep);
-    color:#fff6f0;
+    color:var(--card);
     font-family:'Karla',sans-serif;
     font-size:0.72rem;
-    letter-spacing:0.04em;
+    letter-spacing:0.03em;
     padding:5px 12px 5px 16px;
     border-radius:0 4px 4px 0;
     transform:rotate(-2deg);
-    box-shadow:0 2px 4px rgba(0,0,0,0.15);
+    box-shadow:0 3px 6px rgba(0,0,0,0.18);
   }
   .swing-tag::before{
     content:"";
     position:absolute;
-    left:5px;
-    top:50%;
-    width:4px;
-    height:4px;
+    left:5px; top:50%;
+    width:4px; height:4px;
     border-radius:50%;
-    background:#fff6f0;
+    background:var(--card);
     transform:translateY(-50%);
   }
 
   .status-badge{
     position:absolute;
-    top:12px;
-    right:12px;
+    top:14px; right:14px;
     display:flex;
     align-items:center;
     gap:6px;
-    background:rgba(251,246,234,0.92);
-    padding:5px 10px;
+    background:color-mix(in srgb, var(--card) 92%, transparent);
+    padding:5px 11px;
     border-radius:999px;
     font-size:0.72rem;
     color:var(--ink);
   }
-  .status-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--sage);
-  }
-  .status-badge.unavailable .status-dot{background:var(--muted);}
-  .status-badge.unavailable{color:var(--ink-soft);}
+  .status-dot{ width:7px; height:7px; border-radius:50%; background:var(--sage); }
+  .status-badge.unavailable .status-dot{ background:var(--muted); }
+  .status-badge.unavailable{ color:var(--ink-soft); }
 
-  .card-body{
-    padding:16px 16px 18px;
-  }
+  .card-body{ padding:17px 17px 19px; }
 
   .card-name{
     font-family:'Cormorant Garamond',serif;
     font-weight:600;
-    font-size:1.28rem;
-    margin:0 0 4px;
-    color:var(--ink);
-  }
-
-  .card-tag{
-    font-size:0.75rem;
-    letter-spacing:0.03em;
-    color:var(--rose-deep);
+    font-size:1.32rem;
     margin:0 0 8px;
-    text-transform:uppercase;
+    color:var(--ink);
+    line-height:1.2;
   }
 
   .card-detail{
-    font-size:0.85rem;
+    font-size:0.86rem;
     color:var(--ink-soft);
-    margin:0 0 12px;
-    line-height:1.4;
+    margin:0 0 13px;
+    line-height:1.45;
   }
 
-  .swatch-row{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    margin-bottom:12px;
-    flex-wrap:wrap;
-  }
+  .swatch-row{ display:flex; align-items:center; gap:7px; margin-bottom:13px; flex-wrap:wrap; }
   .swatch{
-    width:16px;
-    height:16px;
+    width:16px; height:16px;
     border-radius:50%;
     border:1px solid rgba(0,0,0,0.15);
     box-shadow:inset 0 0 0 2px var(--card);
   }
-  .swatch-empty{
-    font-size:0.75rem;
-    color:var(--ink-soft);
-    font-style:italic;
-  }
+  .swatch-empty{ font-size:0.78rem; color:var(--ink-soft); font-style:italic; }
 
-  .size-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-  }
+  .size-row{ display:flex; flex-wrap:wrap; gap:6px; }
   .size-pill{
-    font-size:0.72rem;
+    font-size:0.74rem;
     font-family:'Karla',sans-serif;
     min-width:28px;
-    padding:0 6px;
-    height:24px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:6px;
+    padding:0 7px;
+    height:25px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:7px;
     border:1px solid var(--line);
     color:var(--ink);
     background:var(--paper);
@@ -283,55 +376,76 @@
   }
 
   .card-hint{
-    margin:14px 0 0;
-    font-size:0.74rem;
-    color:var(--ink-soft);
-    display:flex;
-    align-items:center;
-    gap:6px;
+    margin:15px 0 0;
+    padding-top:13px;
+    border-top:1px dashed var(--line);
+    font-size:0.78rem;
+    color:var(--rose-deep);
+    font-weight:600;
   }
 
   /* ---------------- Footer ---------------- */
   .site-footer{
     text-align:center;
-    padding:40px 24px 60px;
+    padding:56px 24px 72px;
+  }
+  .site-footer p{
     color:var(--ink-soft);
+    font-size:0.95rem;
+    margin:0 0 18px;
+    line-height:1.6;
+  }
+  .ig-button{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:13px 28px;
+    background:var(--ink);
+    color:var(--card);
+    font-weight:700;
     font-size:0.92rem;
-  }
-  .site-footer a{
-    color:var(--rose-deep);
-    font-weight:600;
+    border-radius:999px;
     text-decoration:none;
-    border-bottom:1px solid var(--rose-deep);
+    transition:transform 0.18s ease, opacity 0.18s ease;
   }
+  .ig-button:hover{ transform:translateY(-2px); opacity:0.92; }
 
   @media (max-width:420px){
-    .grid{grid-template-columns:1fr 1fr; gap:16px; padding:18px 16px 48px;}
-    .site-header{padding:40px 18px 20px;}
+    .grid{ grid-template-columns:1fr 1fr; gap:14px; }
+    .hero{ padding:52px 0 30px; }
+    .type-section{ padding:36px 0 6px; }
   }
 </style>
 </head>
 <body>
 
-<header class="site-header">
-<img
-  class="brand-mark"
-  src="./image-removebg-preview.png"
-  alt="Leen Store logo"
->
-  <h2>Leen Store</h2>
-  <div class="stitch-divider"></div>
+<header class="hero">
+  <div class="wrap">
+    <svg class="brand-mark" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M14 6c10 0 26 10 26 22s-16 22-26 22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M4 12c14 2 24 12 24 16s-10 14-24 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
+    </svg>
+    <div class="eyebrow-thread"><span class="thread-line" style="width:24px"></span><span>Leen Store</span><span class="thread-line" style="width:24px"></span></div>
+    <h1>The Leen Collection</h1>
+    <p class="tagline">Pieces cut with care, kept in small numbers — each one styled and shipped by hand.</p>
+    <a class="hero-cta" href="#" id="hero-ig">Shop on Instagram</a>
+    <div class="stitch-divider"></div>
+  </div>
 </header>
 
-<nav class="filters" id="filters" aria-label="Filter by category"></nav>
+<div class="filters-bar">
+  <nav class="filters wrap" id="filters" aria-label="Filter by category"></nav>
+</div>
 
-<main class="grid" id="grid" aria-live="polite">
+<main class="catalog wrap" id="catalog" aria-live="polite">
   <p class="state-message">Loading the collection…</p>
 </main>
 
 <footer class="site-footer">
-  <p>See something you love? Tap the dress and message us on Instagram —<br>
-  <a href="https://instagram.com/leen.store" id="footer-ig" target="_blank" rel="noopener">@leen.store</a></p>
+  <div class="wrap">
+    <p>See something you love? Tap any piece, or message us directly —<br>we'll confirm sizing and availability over DM.</p>
+    <a class="ig-button" href="#" id="footer-ig" target="_blank" rel="noopener">@leen.store</a>
+  </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -340,17 +454,21 @@
   const SUPABASE_URL = "https://rfxwamiiqasjdforomcp.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_QRK5k5pd44w_A1UY7iHq6g_YxiPwq4W";
   const INSTAGRAM_USERNAME = "leen.clothing.store";
+  const FALLBACK_TYPE = "Other";
   // =======================================
 
   const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_USERNAME}`;
   document.getElementById("footer-ig").href = INSTAGRAM_URL;
   document.getElementById("footer-ig").textContent = "@" + INSTAGRAM_USERNAME;
+  document.getElementById("hero-ig").href = INSTAGRAM_URL;
+  document.getElementById("hero-ig").target = "_blank";
+  document.getElementById("hero-ig").rel = "noopener";
 
-  const grid = document.getElementById("grid");
+  const catalog = document.getElementById("catalog");
   const filtersEl = document.getElementById("filters");
 
   let products = [];
-  let activeTag = "All";
+  let activeType = "All";
 
   function escapeHtml(str){
     return (str || "").replace(/[&<>"']/g, m => ({
@@ -364,72 +482,103 @@
     return s.color !== "";
   }
 
-  function renderFilters(){
-    const tags = ["All", ...new Set(products.map(p => p.tag).filter(Boolean))];
-    filtersEl.innerHTML = tags.map(tag => `
-      <button class="chip ${tag === activeTag ? "active" : ""}" data-tag="${escapeHtml(tag)}">
-        ${escapeHtml(tag)}
+  function getType(p){
+    return (p.type && String(p.type).trim()) || FALLBACK_TYPE;
+  }
+
+  function renderFilters(types){
+    const tabs = ["All", ...types];
+    filtersEl.innerHTML = tabs.map(t => `
+      <button class="chip ${t === activeType ? "active" : ""}" data-type="${escapeHtml(t)}">
+        ${escapeHtml(t)}
       </button>
     `).join("");
 
     filtersEl.querySelectorAll(".chip").forEach(btn => {
       btn.addEventListener("click", () => {
-        activeTag = btn.dataset.tag;
-        renderFilters();
-        renderGrid();
+        activeType = btn.dataset.type;
+        renderFilters(types);
+        renderCatalog();
       });
     });
   }
 
-  function renderGrid(){
-    const list = activeTag === "All" ? products : products.filter(p => p.tag === activeTag);
+  function cardHtml(p){
+    const colors = Array.isArray(p.colors) ? p.colors : [];
+    const sizes = Array.isArray(p.sizes) ? p.sizes : [];
 
-    if (list.length === 0){
-      grid.innerHTML = `<p class="state-message">No items in this category yet — check back soon.</p>`;
+    const swatchHtml = colors.length
+      ? colors.map(c => {
+          const cssColor = isValidCssColor(c) ? c : "#cccccc";
+          return `<span class="swatch" style="background:${escapeHtml(cssColor)}" title="${escapeHtml(c)}"></span>`;
+        }).join("")
+      : `<span class="swatch-empty">One color</span>`;
+
+    const sizeHtml = sizes.length
+      ? sizes.map(size => `<span class="size-pill">${escapeHtml(String(size))}</span>`).join("")
+      : "";
+
+    const inStock = p.availability !== false;
+    const displayName = p.name || getType(p);
+
+    return `
+      <article class="card" tabindex="0" role="button"
+                aria-label="${escapeHtml(displayName)} — message us on Instagram to order"
+                data-id="${p.id}">
+        <div class="card-media">
+          <img src="${escapeHtml(p.image)}" alt="${escapeHtml(displayName)}" loading="lazy">
+          ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
+          <span class="status-badge ${inStock ? "" : "unavailable"}">
+            <span class="status-dot"></span>${inStock ? "In stock" : "Sold out"}
+          </span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-name">${escapeHtml(displayName)}</h3>
+          ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
+          <div class="swatch-row">${swatchHtml}</div>
+          <div class="size-row">${sizeHtml}</div>
+          <p class="card-hint">Message to order →</p>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCatalog(){
+    if (products.length === 0){
+      catalog.innerHTML = `<p class="state-message">No items added yet.</p>`;
       return;
     }
 
-    grid.innerHTML = list.map(p => {
-      const colors = Array.isArray(p.colors) ? p.colors : [];
-      const sizes = Array.isArray(p.sizes) ? p.sizes : [];
+    // group by type, preserving first-seen order
+    const groups = new Map();
+    products.forEach(p => {
+      const t = getType(p);
+      if (!groups.has(t)) groups.set(t, []);
+      groups.get(t).push(p);
+    });
 
-      const swatchHtml = colors.length
-        ? colors.map(c => {
-            const cssColor = isValidCssColor(c) ? c : "#cccccc";
-            return `<span class="swatch" style="background:${escapeHtml(cssColor)}" title="${escapeHtml(c)}"></span>`;
-          }).join("")
-        : `<span class="swatch-empty">One color</span>`;
+    const typesToShow = activeType === "All" ? [...groups.keys()] : [activeType];
 
-      const sizeHtml = sizes.length
-        ? sizes.map(size => `<span class="size-pill">${escapeHtml(String(size))}</span>`).join("")
-        : "";
+    const sections = typesToShow
+      .filter(t => groups.has(t))
+      .map(t => {
+        const items = groups.get(t);
+        return `
+          <section class="type-section" id="type-${escapeHtml(t.replace(/\s+/g,'-').toLowerCase())}">
+            <div class="type-heading">
+              <h2>${escapeHtml(t)}</h2>
+              <span class="type-count">${items.length} piece${items.length === 1 ? "" : "s"}</span>
+            </div>
+            <div class="grid">${items.map(cardHtml).join("")}</div>
+          </section>
+        `;
+      });
 
-      const inStock = p.availability !== false;
-      const displayName = p.name || p.tag || "Item";
+    catalog.innerHTML = sections.length
+      ? sections.join("")
+      : `<p class="state-message">No items in this category yet — check back soon.</p>`;
 
-      return `
-        <article class="card" tabindex="0" role="button"
-                  aria-label="${escapeHtml(displayName)} — message us on Instagram to order"
-                  data-id="${p.id}">
-          <div class="card-media">
-            <img src="${escapeHtml(p.image)}" alt="${escapeHtml(displayName)}" loading="lazy">
-            ${p.tag ? `<span class="swing-tag">${escapeHtml(p.tag)}</span>` : ""}
-            <span class="status-badge ${inStock ? "" : "unavailable"}">
-              <span class="status-dot"></span>${inStock ? "In stock" : "Sold out"}
-            </span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-name">${escapeHtml(displayName)}</h3>
-            ${p.detail ? `<p class="card-detail">${escapeHtml(p.detail)}</p>` : ""}
-            <div class="swatch-row">${swatchHtml}</div>
-            <div class="size-row">${sizeHtml}</div>
-            <p class="card-hint">Tap to DM us on Instagram to order →</p>
-          </div>
-        </article>
-      `;
-    }).join("");
-
-    grid.querySelectorAll(".card").forEach(card => {
+    catalog.querySelectorAll(".card").forEach(card => {
       const open = () => window.open(INSTAGRAM_URL, "_blank", "noopener");
       card.addEventListener("click", open);
       card.addEventListener("keydown", e => {
@@ -440,7 +589,7 @@
 
   async function loadProducts(){
     if (SUPABASE_URL.includes("YOUR_SUPABASE") || SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")){
-      grid.innerHTML = `<p class="state-message">Add your Supabase URL and anon key at the top of the script to load the collection.</p>`;
+      catalog.innerHTML = `<p class="state-message">Add your Supabase URL and anon key at the top of the script to load the collection.</p>`;
       return;
     }
 
@@ -455,14 +604,16 @@
 
       products = data || [];
       if (products.length === 0){
-        grid.innerHTML = `<p class="state-message">No items added yet.</p>`;
+        catalog.innerHTML = `<p class="state-message">No items added yet.</p>`;
         return;
       }
-      renderFilters();
-      renderGrid();
+
+      const types = [...new Set(products.map(getType))];
+      renderFilters(types);
+      renderCatalog();
     } catch (err){
       console.error(err);
-      grid.innerHTML = `<p class="state-message">Couldn't load the collection right now. Please refresh, or check the Supabase settings in the script.</p>`;
+      catalog.innerHTML = `<p class="state-message">Couldn't load the collection right now. Please refresh, or check the Supabase settings in the script.</p>`;
     }
   }
 
