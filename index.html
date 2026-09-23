@@ -130,10 +130,36 @@
   .hero-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
 
   @media(max-width:640px){
-    .hero{aspect-ratio:4/3;}
-    .hero-text{max-width:100%;padding-inline-end:10px;}
-    .hero-text h2{font-size:22px;}
-    .hero-slide{padding:0 24px;}
+    .hero{aspect-ratio:3/4;}
+    .hero-text{
+      align-items:flex-end;
+      justify-content:center;
+      padding:0 16px 18px;
+      background:linear-gradient(180deg,rgba(43,33,29,0) 0%,rgba(43,33,29,.08) 60%,rgba(43,33,29,.28) 100%);
+    }
+    .hero-text > div{
+      max-width:100%;
+      width:100%;
+      text-align:center;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius:18px;
+      padding:18px 20px 20px;
+      box-shadow:0 12px 28px rgba(43,33,29,.2);
+    }
+    .hero-text h2{font-size:19px;line-height:1.35;margin-bottom:8px;}
+    .hero-text p{font-size:12.5px;margin-bottom:14px;}
+    .btn-primary{width:100%;padding:11px 22px;font-size:13px;}
+  }
+
+  @media(max-width:380px){
+    .hero{aspect-ratio:4/5;}
+  }
+
+  @media(max-width:640px){
+    .hero-dots{bottom:auto;top:14px;}
   }
 
   /* ============ Category strip ============ */
