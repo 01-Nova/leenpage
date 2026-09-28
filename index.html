@@ -95,17 +95,33 @@
 
   /* ============ Hero / Banners ============ */
   .hero-wrap{max-width:1280px;margin:24px auto 0;padding:0 24px;}
+
+  /* Option 1: hero sizes itself to the active image — no fixed aspect-ratio */
   .hero{
-    position:relative;border-radius:20px;overflow:hidden;
-    background:linear-gradient(135deg,var(--blush) 0%,var(--blush-deep) 100%);
-    aspect-ratio:2.3/1;
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    background:var(--blush);
+    transition:height .35s ease;
   }
   .hero-slide{
-    position:absolute;inset:0;
-    opacity:0;transition:opacity .6s ease;
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition:opacity .6s ease;
+    pointer-events:none;
+  }
+  .hero-slide.active{
+    position:relative;       /* active slide defines the container height */
+    opacity:1;
+    pointer-events:auto;
   }
   .hero-slide img{
-    width:100%;height:100%;object-fit:cover;object-position:center;display:block;
+    width:100%;
+    height:auto;             /* let the image define its own height */
+    display:block;
+    object-fit:cover;
+    object-position:center;
   }
   .hero-text{
     position:absolute;inset:0;z-index:2;
@@ -115,7 +131,6 @@
     background:linear-gradient(90deg,rgba(251,243,236,.9) 0%,rgba(251,243,236,.55) 40%,rgba(251,243,236,0) 70%);
   }
   .hero-text > div{max-width:420px;pointer-events:auto;}
-  .hero-slide.active{opacity:1;}
   .hero-text h2{font-size:34px;color:var(--ink);line-height:1.35;margin-bottom:16px;}
   .hero-text p{color:var(--ink-soft);margin-bottom:20px;font-size:15px;}
   .btn-primary{
@@ -127,10 +142,10 @@
   .hero-dots{position:absolute;bottom:18px;right:50%;transform:translateX(50%);display:flex;gap:8px;z-index:3;}
   .hero-dots span{width:8px;height:8px;border-radius:50%;background:rgba(43,33,29,.25);cursor:pointer;}
   .hero-dots span.active{background:var(--rose-dark);width:22px;border-radius:5px;transition:.25s;}
-  .hero-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+  .hero-empty{position:relative;display:flex;align-items:center;justify-content:center;padding:80px 20px;color:var(--ink-soft);}
 
   @media(max-width:640px){
-    .hero{aspect-ratio:4/3;}
+    /* NOTE: aspect-ratio removed so the image keeps defining height on mobile */
     .hero-text{
       align-items:flex-end;
       justify-content:center;
@@ -281,9 +296,6 @@
   </div>
 </header>
 
-<div id="configWarning" class="config-warning" style="display:none;">
-  ⚠️ تکایە SUPABASE_URL و SUPABASE_ANON_KEY لە سەرەوەی فایلی client.html پڕبکەرەوە بۆ ئەوەی داتا لە Supabase وەربگیرێت.
-</div>
 
 <!-- ============ Hero banners ============ -->
 <div class="hero-wrap">
